@@ -19,7 +19,7 @@ Orbit = {
                     let gravityForce = getComputedStyle(childElement).getPropertyValue('--o-force');
                     
                     let forceRatio = width / 500
-                    console.log(gravityForce, forceRatio, parseFloat(gravityForce) * forceRatio)
+                    
                     childElement.style.setProperty('--o-force-ratio', `${forceRatio}`);
                 });
             
