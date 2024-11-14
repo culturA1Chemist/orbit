@@ -16,3 +16,7 @@ o-text {
   transform: rotate(calc(var(--o-from) + var(--o-angle-composite)));
 }
 
+o-text[flip]{
+  --o-angle-composite: var(--o-angle) * calc(var(--o-orbit-child-number) + 1) * var(--o-direction, 1);
+}
+
