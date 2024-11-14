@@ -88,7 +88,7 @@ export class OrbitText extends HTMLElement {
     text.style.fontSize = `calc(${fontSize} * (100 / (${length}) * (12 /  var(--o-orbit-number) ))`
 
    
-    textPath.textContent = this.textContent.trim();
+    textPath.textContent = this.textContent;
     
   }
 
