@@ -188,12 +188,12 @@ Can be used in parent elements or in each orbiter class
   --o-angle-composite: 270deg !important;
 }
 
-.capsule.stable  {
+.capsule.horizontal  {
   --o-gyro: calc(90deg - ( var(--o-angle) * var(--o-orbit-child-number)));
   --o-angle-composite: var(--o-gyro);
 }
 
-.satellite>.capsule.stable  {
+.satellite>.capsule.horizontal  {
   --o-gyro: calc(var(--o-angle) * var(--o-orbit-child-number));
 }
 
