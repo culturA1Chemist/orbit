@@ -51,6 +51,7 @@
    }
  
    update() {
+    
      const { shape } = this.getAttributes();
      const svg = this.shadowRoot.querySelector('svg');
      const path = this.shadowRoot.querySelector('path');
@@ -64,9 +65,9 @@
        path.setAttribute('marker-start', 'url(#tail)');
      }
  
-     const { realRadius, arcColor, gap } = this.getAttributes();
+     const { realRadius, arcColor, gap, value } = this.getAttributes();
      const angle = this.calculateAngle();
-     const { d } = this.calculateArcParameters(angle, realRadius, gap);
+     const { d } = this.calculateArcParameters(angle, realRadius, gap, value);
  
      path.setAttribute('d', d);
      path.setAttribute('stroke', arcColor);
@@ -78,11 +79,31 @@
      const gap = parseFloat(getComputedStyle(this).getPropertyValue('--o-gap') || 0.001);
      const shape = this.getAttribute('shape') || 'none';
      const arcColor = this.getAttribute('arc-color');
-     const rawAngle = getComputedStyle(this).getPropertyValue('--o-angle');
+     const value = parseFloat(this.getAttribute('value'));
+     const range = parseFloat(
+      getComputedStyle(this).getPropertyValue('--o-range') || 360
+    );
+     let rawAngle
+     let arcAngle
+     if (value) {
+      arcAngle = this.getProgressAngle(range, value);
+     
+      const prevElement = this.previousElementSibling
+      const stackOffset = prevElement ? parseFloat(getComputedStyle(prevElement).getPropertyValue('--o_stack')) : 0;
+      this.style.setProperty('--o_stack', stackOffset + arcAngle);
+      if (stackOffset > 0) {
+        
+        this.style.setProperty('--o-angle-composite', parseFloat(stackOffset) + 'deg');
+      }
+      
+    } else {
+      rawAngle = getComputedStyle(this).getPropertyValue('--o-angle');
+      arcAngle = calcularExpresionCSS(rawAngle);
+    }
      const strokeWidth = parseFloat(getComputedStyle(this).getPropertyValue('stroke-width') || 1);
      const strokeWithPercentage = ((strokeWidth / 2) * 100) / orbitRadius / 2;
      let innerOuter = strokeWithPercentage;
- 
+     
      if (this.classList.contains('outer-orbit')) {
        innerOuter = strokeWithPercentage * 2;
      }
@@ -97,7 +118,7 @@
      }
  
      const realRadius = 50 + innerOuter - strokeWithPercentage;
-     const arcAngle = calcularExpresionCSS(rawAngle);
+     
  
      return {
        orbitRadius,
@@ -114,6 +135,12 @@
      const { arcAngle, gap } = this.getAttributes();
      return arcAngle - gap;
    }
+
+   getProgressAngle(maxAngle, value) {
+    const progress = value
+    const maxValue = parseFloat(this.getAttribute('max')) || 100;
+    return (progress / maxValue) * maxAngle;
+  }
  
    calculateArcParameters(angle, realRadius) {
      const radiusX = realRadius / 1;
