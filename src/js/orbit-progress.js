@@ -58,16 +58,17 @@ export class OrbitProgress extends HTMLElement {
   update() {
     const { shape } = this.getAttributes();
     const svg = this.shadowRoot.querySelector('svg');
-    const defs = this.createDefs();
-    if (shape !== 'none') {
+    if (shape !== 'none' && shape !== 'circle') {
+      const defs = this.createDefs();
       defs.appendChild(this.createMarker('head', 'end'));
       defs.appendChild(this.createMarker('tail', 'start'));
+      svg.querySelector('defs').replaceWith(defs);
     }
     const progressBg = this.shadowRoot.querySelector('.progress-bg');
     const progressBar = this.shadowRoot.querySelector('.progress-bar');
     this.updateArc(progressBg, true);
     this.updateArc(progressBar, false);
-    svg.querySelector('defs').replaceWith(defs);
+    
   }
 
   createSVGElement() {
@@ -94,7 +95,8 @@ export class OrbitProgress extends HTMLElement {
     arc.setAttribute('d', d);
     arc.setAttribute('stroke', full ? progressBgColor : progressBarColor);
     arc.setAttribute('fill', 'transparent');
-    if (shape !== 'none') {
+    if (shape === 'circle') arc.setAttribute('stroke-linecap', 'round');
+    if (shape !== 'none' && shape !== 'circle') {
       arc.setAttribute('marker-end', 'url(#head)');
       arc.setAttribute('marker-start', 'url(#tail)');
     }
