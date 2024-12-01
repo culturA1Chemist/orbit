@@ -56,8 +56,8 @@
      const svg = this.shadowRoot.querySelector('svg');
      const path = this.shadowRoot.querySelector('path');
      const defs = this.shadowRoot.querySelector('defs');
- 
-     if (shape !== 'none') {
+     if (shape === 'circle') path.setAttribute('stroke-linecap', 'round');
+     if (shape !== 'none' && shape !== 'circle') {
        defs.innerHTML = ''; // Limpiar defs previos
        defs.appendChild(this.createMarker('head', 'end'));
        defs.appendChild(this.createMarker('tail', 'start'));
@@ -71,6 +71,7 @@
  
      path.setAttribute('d', d);
      path.setAttribute('stroke', arcColor);
+     
      // path.setAttribute('stroke-width', strokeWidth);
    }
  
