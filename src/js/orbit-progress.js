@@ -96,7 +96,7 @@ export class OrbitProgress extends HTMLElement {
     arc.setAttribute('stroke', full ? progressBgColor : progressBarColor);
     arc.setAttribute('fill', 'transparent');
     if (shape === 'circle') arc.setAttribute('stroke-linecap', 'round');
-    if (shape !== 'none' && shape !== 'circle') {
+    if (shape !== 'none' && shape !== 'circle' && CSS.supports('fill', 'context-stroke')) {
       arc.setAttribute('marker-end', 'url(#head)');
       arc.setAttribute('marker-start', 'url(#tail)');
     }

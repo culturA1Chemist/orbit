@@ -57,7 +57,7 @@
      const path = this.shadowRoot.querySelector('path');
      const defs = this.shadowRoot.querySelector('defs');
      if (shape === 'circle') path.setAttribute('stroke-linecap', 'round');
-     if (shape !== 'none' && shape !== 'circle') {
+     if (shape !== 'none' && shape !== 'circle' && CSS.supports('fill', 'context-stroke')) {
        defs.innerHTML = ''; // Limpiar defs previos
        defs.appendChild(this.createMarker('head', 'end'));
        defs.appendChild(this.createMarker('tail', 'start'));
