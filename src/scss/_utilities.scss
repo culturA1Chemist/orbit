@@ -205,7 +205,7 @@ Can be used in parent elements or in each orbiter class
 }
 
 /*  Satellite  gyro */
-.satellite.sync-rotation {
+.satellite.spin-lock {
   transform: var(--o-transform) rotate(calc(var(--o-angle-composite)));
 }
 
