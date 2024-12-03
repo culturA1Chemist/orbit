@@ -1,3 +1,14 @@
+ /**
+ * color proposal
+ * o-arc.color -> change css vars
+ * o-arc.background-color -> change css vars && re,move arc-color
+ * o-arc.hover-color -> change css vars
+ * 
+ * attributes
+ * shape && circle|box|etc class
+ * max ok but -> check
+ * value ok
+ */
  const template = document.createElement('template');
  template.innerHTML = `
    <style>
@@ -14,13 +25,13 @@
           pointer-events: stroke;
         }
        .arc {
-          stroke: var(--o-arc-color, var(--o-cyan-light));
+          stroke: var(--o-color);
           stroke-width:  calc(var(--o-radius) / var(--o-orbit-number) * var(--o-size-ratio, 1));
           transition: stroke 0.3s;
         }
         
         :host(:hover) .arc {
-          stroke: var(--o-hover-arc-color, var(--o-arc-color));
+          stroke: var(--o-hover-color, var(--o-color));
           
         }
    </style>
@@ -65,12 +76,12 @@
        path.setAttribute('marker-start', 'url(#tail)');
      }
  
-     const { realRadius, arcColor, gap, value } = this.getAttributes();
+     const { realRadius, gap, value } = this.getAttributes();
      const angle = this.calculateAngle();
      const { d } = this.calculateArcParameters(angle, realRadius, gap, value);
  
      path.setAttribute('d', d);
-     path.setAttribute('stroke', arcColor);
+     //path.setAttribute('stroke', arcColor);
      
      // path.setAttribute('stroke-width', strokeWidth);
    }
@@ -79,7 +90,7 @@
      const orbitRadius = parseFloat(getComputedStyle(this).getPropertyValue('r') || 0);
      const gap = parseFloat(getComputedStyle(this).getPropertyValue('--o-gap') || 0.001);
      const shape = this.getAttribute('shape') || 'none';
-     const arcColor = this.getAttribute('arc-color');
+     //const arcColor = this.getAttribute('arc-color');
      const value = parseFloat(this.getAttribute('value'));
      const range = parseFloat(
       getComputedStyle(this).getPropertyValue('--o-range') || 360
@@ -125,7 +136,6 @@
        orbitRadius,
        strokeWidth,
        realRadius,
-       arcColor,
        gap,
        arcAngle,
        shape,
@@ -139,6 +149,7 @@
 
    getProgressAngle(maxAngle, value) {
     const progress = value
+    // not now, but take value com parent o-orbit
     const maxValue = parseFloat(this.getAttribute('max')) || 100;
     return (progress / maxValue) * maxAngle;
   }

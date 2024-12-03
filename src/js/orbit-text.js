@@ -1,3 +1,14 @@
+/**
+ * sacar path color para o-text
+ * color proposal
+ * o-text.color -> change css vars
+ * o-text.background-color -> change css vars
+ * o-text.hover-color -> change css vars
+ * 
+ * attributes
+ * fit-range toBe .fit-range
+ * flip && .flip
+ */
 export class OrbitText extends HTMLElement {
   constructor() {
     super();
@@ -29,14 +40,17 @@ export class OrbitText extends HTMLElement {
         
         path {
           fill: transparent;
-          stroke: var(--o-text-color);
-          transition: stroke 0.3s;
+          stroke: transparent;
         }
-       
-        :host(:hover) path {
-          stroke: var(--o-hover-text-color, var(--o-text-color));
+        text {
+          color: var(--o-color);
+          transition: color 0.3s;
+        }
+        :host(:hover) text {
+          color: var(--o-hover-color, var(--o-color));
           
         }
+
       
         
       </style>
@@ -106,8 +120,8 @@ export class OrbitText extends HTMLElement {
 
   getAttributes() {
     const orbitRadius = parseFloat(getComputedStyle(this).getPropertyValue('r') || 0);
-    const flip = this.hasAttribute('flip');
-    const fitRange = this.hasAttribute('fit-range');
+    const flip = this.hasAttribute('flip') || this.classList.contains('flip');
+    const fitRange = this.hasAttribute('fit-range') || this.classList.contains('fit-range');;
     const lineCap = getComputedStyle(this).getPropertyValue('--o-linecap') || 'butt';
     const gap = parseFloat(getComputedStyle(this).getPropertyValue('--o-gap') || 0.001);
     const length = parseFloat(getComputedStyle(this).getPropertyValue('--o-force'));

@@ -1,4 +1,14 @@
-
+/**
+ * color proposal
+ * o-progress.color -> change css vars
+ * o-progress.background-color -> change css vars
+ * o-prograss.hover-color -> change css vars
+ * 
+ * attributes
+ * shape && circle|box|etc class
+ * max ok but -> check
+ * value ok
+ */
 export class OrbitProgress extends HTMLElement {
 
   constructor() {
@@ -20,14 +30,14 @@ export class OrbitProgress extends HTMLElement {
         }
         .progress-bar {
           fill: transparent;
-          stroke: var(--o-progress-color);
+          stroke: var(--o-color);
           transition: stroke 0.3s;
         }
         .progress-bg {
-          stroke: var(--o-bg-color, transparent);
+          stroke: var(--o-background-color, transparent);
         }
         :host(:hover) .progress-bar {
-          stroke: var(--o-hover-progress-color, var(--o-progress-color));
+          stroke: var(--o-hover-color, var(--o-color));
           
         }
       </style>
