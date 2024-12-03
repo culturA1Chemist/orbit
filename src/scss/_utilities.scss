@@ -209,10 +209,6 @@ Can be used in parent elements or in each orbiter class
   transform: var(--o-transform) rotate(calc(var(--o-angle-composite)));
 }
 
-o-progress.rounded,o-text.rounded {
-  --o-linecap: round;
-}
-
 .gooey-fx-light, .gooey-fx{
   filter: url('data:image/svg+xml,\
   <svg xmlns="http://www.w3.org/2000/svg">\
