@@ -25,20 +25,19 @@
 }
 
 o-progress {
-  --o-progress-color: currentcolor;
-  --o-hover-progress-color: currentcolor;
-  --o-bg-color: transparent;
+  --o-color: currentcolor;
+  --o-hover-color: unset;
+  --o-background-color: transparent;
 }
 
 o-arc {
-  --o-arc-color: currentcolor;
-  --o-hover-sector-color: currentcolor;
+  --o-color: currentcolor;
+  --o-hover-color: unset;
 }
 
 o-text {
-  --o-text-color: transparent;
-  --o-hover-label-color: transparent;
-  color: currentColor;
+  --o-color: currentcolor;
+  --o-hover-color: unset;
 }
 
 /* Dev theme based on default*/
@@ -73,20 +72,20 @@ o-text {
   }
   
   o-progress {
-    --o-progress-color: currentColor;
-    --o-hover-progress-color: currentColor;
-    --o-bg-color: transparent;
+    --o-color: currentColor;
+    --o-hover-color: unset;
+    --o-background-color: transparent;
   }
   
   o-arc {
-    --o-arc-color: currentColor;
-    --o-hover-sector-color: currentColor;
+    --o-color: currentColor;
+    --o-hover-color: unset;
   }
   
   o-text {
-    --o-text-color: transparent;
-    --o-hover-label-color: transparent;
-    color: currentcolor;
+    --o-color: currentColor;
+    --o-hover-color: unset;
+   
   }
 }
 
@@ -118,20 +117,19 @@ o-text {
 }
 
 o-progress {
-  --o-progress-color: var(--o-cyan);
-  --o-hover-progress-color: var(--o-cyan);
-  --o-bg-color: transparent;
+  --o-color: var(--o-cyan);
+  --o-hover-color: var(--o-cyan);
+  --o-background-color: transparent;
 }
 
 o-arc {
-  --o-arc-color: var(--o-cyan);
-  --o-hover-sector-color: var(--o-cyan);
+  --o-color: var(--o-cyan);
+  --o-hover-color: unset;
 }
 
 o-text {
-  --o-text-color: transparent;
-  --o-hover-label-color: transparent;
-  color: var(--o-cyan);
+  --o-text-color: var(--o-cyan-dark);
+  --o-hover-color: var(--o-cyan-darker);
 }
 }
 
