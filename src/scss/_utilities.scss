@@ -59,6 +59,9 @@ $max-grade: 360;
     --o-from: #{$i}deg;
   }
 }
+[class*=angle-] {
+  --o-from: 0deg !important;
+}
 @for $i from 0 through $max-grade {
   .angle-#{$i} {
     --o-angle-composite: calc(#{$i}deg - 90deg) !important; 
@@ -191,6 +194,10 @@ Can be used in parent elements or in each orbiter class
 .capsule.horizontal  {
   --o-gyro: calc(90deg - ( var(--o-angle) * var(--o-orbit-child-number)));
   --o-angle-composite: var(--o-gyro);
+}
+
+.satellite.spin-lock>.capsule  {
+  --o-angle-composite: -90deg !important;
 }
 
 .satellite>.capsule.horizontal  {
