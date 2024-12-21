@@ -1,6 +1,7 @@
 
 .satellite {
   container-name: satellite;
+  --o-size-ratio: 1;
   --o-angle-composite: (var(--o-angle) * var(--o-orbit-child-number) var(--o-offset, + 270deg)) * var(--o-direction, 1);
   --o-transform: translate(
     calc(
