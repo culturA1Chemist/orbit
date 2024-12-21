@@ -191,17 +191,15 @@ Can be used in parent elements or in each orbiter class
   --o-angle-composite: 270deg !important;
 }
 
-.capsule.horizontal  {
-  --o-gyro: calc(90deg - ( var(--o-angle) * var(--o-orbit-child-number)));
-  --o-angle-composite: var(--o-gyro);
+.side>.capsule.horizontal  {
+  --o-angle-composite: calc(90deg - var(--o-from) - (var(--o-angle)* var(--o-orbit-child-number)));
 }
 
 .satellite.spin-lock>.capsule  {
-  --o-angle-composite: -90deg !important;
+  --o-angle-composite: calc(-90deg + var(--o-from)) !important;
 }
-
-.satellite>.capsule.horizontal  {
-  --o-gyro: calc(var(--o-angle) * var(--o-orbit-child-number));
+.satellite.spin-lock>.capsule.flip  {
+  --o-angle-composite: calc(90deg + var(--o-from)) !important;
 }
 
 .satellite>.capsule.turn-left {
