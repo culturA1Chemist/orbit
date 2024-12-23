@@ -12,8 +12,15 @@ o-arc {
   border-radius: 50%;
   position: absolute;
   pointer-events: none;
+  fill: currentColor;
   width: 100%;
   r: var(--o-radius);
   stroke-width:  calc(var(--o-radius) / (var(--o-orbit-number) + var(--o-initial-orbit, 0)) * var(--o-size-ratio, 1));
   transform: rotate(calc(var(--o-from) + var(--o-angle-composite)));
 }
+
+
+o-arc[flip]:not([value]), o-arc.flip:not([value]){
+  --o-angle-composite: var(--o-angle) * calc(var(--o-orbit-child-number) + 1) * var(--o-direction, 1);
+}
+

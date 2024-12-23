@@ -10,11 +10,6 @@
   --o-pink: hsl(348, 100%, 60%);
   --o-gray: hsl(240, 2%, 60%);
 
-  --o-hue: 70; /* 0 - 360 */
-  --o-saturation: 70%; /* 0 - 100% */
-  --o-light: 70%; /* 0 - 100% */
-  --o-color: hsl(var(--o-hue), var(--o-saturation), var(--o-light));
-
   --o-color-white: color-mix(in oklab, var(--o-color), white 95%);
   --o-color-lighter: color-mix(in oklab, var(--o-color), white 75%);
   --o-color-light: color-mix(in oklab, var(--o-color), white 30%);

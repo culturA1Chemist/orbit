@@ -121,7 +121,7 @@ export class OrbitText extends HTMLElement {
   getAttributes() {
     const orbitRadius = parseFloat(getComputedStyle(this).getPropertyValue('r') || 0);
     const flip = this.hasAttribute('flip') || this.classList.contains('flip');
-    const fitRange = this.hasAttribute('fit-range') || this.classList.contains('fit-range');;
+    const fitRange = this.hasAttribute('fit-range') || this.classList.contains('fit-range');
     const lineCap = getComputedStyle(this).getPropertyValue('--o-linecap') || 'butt';
     const gap = parseFloat(getComputedStyle(this).getPropertyValue('--o-gap') || 0.001);
     const length = parseFloat(getComputedStyle(this).getPropertyValue('--o-force'));
