@@ -113,9 +113,12 @@ export class OrbitArc extends HTMLElement {
     const orbitRadius = parseFloat(
       getComputedStyle(this).getPropertyValue('r') || 0
     )
-    const gap = parseFloat(
+    const rawGap = parseFloat(
       getComputedStyle(this).getPropertyValue('--o-gap') || 0.001
     )
+
+    const gap = rawGap <= 0 ? 0.001 : rawGap / 2                               
+
     const shape = this.getAttribute('shape') || 'none'
     const flip = this.hasAttribute('flip') || this.classList.contains('flip')
     const fitRange =
