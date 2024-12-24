@@ -113,11 +113,8 @@ export class OrbitArc extends HTMLElement {
     const orbitRadius = parseFloat(
       getComputedStyle(this).getPropertyValue('r') || 0
     )
-    const rawGap = parseFloat(
-      getComputedStyle(this).getPropertyValue('--o-gap') || 0.001
-    )
-
-    const gap = rawGap <= 0 ? 0.001 : rawGap / 2                               
+  
+    const gap =  parseFloat(getComputedStyle(this).getPropertyValue('--o-gap')) || 0.001                            
 
     const shape = this.getAttribute('shape') || 'none'
     const flip = this.hasAttribute('flip') || this.classList.contains('flip')
@@ -202,8 +199,9 @@ export class OrbitArc extends HTMLElement {
   }
 
   calculateAngle() {
-    const { arcAngle, gap } = this.getAttributes()
-    return arcAngle - gap
+    const { arcAngle, gap, flip } = this.getAttributes()
+    let calculation = flip ? arcAngle : arcAngle
+    return calculation
   }
 
   getProgressAngle(maxAngle, value) {
@@ -213,25 +211,35 @@ export class OrbitArc extends HTMLElement {
     return (progress / maxValue) * maxAngle
   }
 
-  calculateArcParameters(angle, realRadius, gap, flip) {
+  calculateArcParameters(angle, realRadius, gap,  flip) {
     const radiusX = realRadius / 1
     const radiusY = realRadius / 1
     let startX, startY, endX, endY, largeArcFlag, d
+    let adjustedGap = gap * 0.5
+
 
     if (flip) {
-      startX = 50 - gap + radiusX * Math.cos(-Math.PI / 2)
-      startY = 50 + radiusY * Math.sin(-Math.PI / 2)
-      endX = 50 + radiusX * Math.cos(((270 - angle) * Math.PI) / 180)
-      endY = 50 + radiusY * Math.sin(((270 - angle) * Math.PI) / 180)
-      largeArcFlag = angle <= 180 ? 0 : 1
-      d = `M ${startX},${startY} A ${radiusX},${radiusY} 0 ${largeArcFlag} 0 ${endX},${endY}`
+      // Coordenadas ajustadas para el inicio del arco (gap incluido)
+      startX = 50 + radiusX * Math.cos((-90 - adjustedGap) * (Math.PI / 180));
+      startY = 50 + radiusY * Math.sin((-90 - adjustedGap) * (Math.PI / 180));
+      // Coordenadas ajustadas para el final del arco (gap incluido)
+      endX = 50 + radiusX * Math.cos(((270 - angle + adjustedGap) * Math.PI) / 180);
+      endY = 50 + radiusY * Math.sin(((270 - angle + adjustedGap) * Math.PI) / 180);
+      // Determinación del flag de arco largo
+      largeArcFlag = angle <= 180 ? 0 : 1;
+      // Generación del path SVG
+      d = `M ${startX},${startY} A ${radiusX},${radiusY} 0 ${largeArcFlag} 0 ${endX},${endY}`;
     } else {
-      startX = 50 + gap + radiusX * Math.cos(-Math.PI / 2)
-      startY = 50 + radiusY * Math.sin(-Math.PI / 2)
-      endX = 50 + radiusX * Math.cos(((angle - 90) * Math.PI) / 180)
-      endY = 50 + radiusY * Math.sin(((angle - 90) * Math.PI) / 180)
-      largeArcFlag = angle <= 180 ? 0 : 1
-      d = `M ${startX},${startY} A ${radiusX},${radiusY} 0 ${largeArcFlag} 1 ${endX},${endY}`
+      // Coordenadas ajustadas para el inicio del arco (gap incluido)
+      startX = 50 + radiusX * Math.cos((-90 + adjustedGap) * (Math.PI / 180));
+      startY = 50 + radiusY * Math.sin((-90 + adjustedGap) * (Math.PI / 180));
+      // Coordenadas ajustadas para el final del arco (gap incluido)
+      endX = 50 + radiusX * Math.cos(((angle - 90 - adjustedGap) * Math.PI) / 180);
+      endY = 50 + radiusY * Math.sin(((angle - 90 - adjustedGap) * Math.PI) / 180);
+      // Determinación del flag de arco largo
+      largeArcFlag = angle <= 180 ? 0 : 1;
+      // Generación del path SVG
+      d = `M ${startX},${startY} A ${radiusX},${radiusY} 0 ${largeArcFlag} 1 ${endX},${endY}`;
     }
     return { d }
   }
