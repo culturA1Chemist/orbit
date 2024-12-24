@@ -35,11 +35,6 @@ o-arc {
   --o-hover-color: unset;
 }
 
-o-text {
-  --o-color: currentcolor;
-  --o-hover-color: unset;
-}
-
 /* Dev theme based on default*/
 .dev-orbit.gravity-spot {
     background: none;
@@ -82,11 +77,6 @@ o-text {
     --o-hover-color: unset;
   }
   
-  o-text {
-    --o-color: currentColor;
-    --o-hover-color: unset;
-   
-  }
 }
 
 /* cyan theme based on default*/
@@ -127,10 +117,6 @@ o-arc {
   --o-hover-color: unset;
 }
 
-o-text {
-  --o-text-color: var(--o-cyan-dark);
-  --o-hover-color: var(--o-cyan-darker);
-}
 }
 
 

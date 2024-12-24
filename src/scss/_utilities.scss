@@ -68,7 +68,7 @@ $max-grade: 360;
   }
 }
 @for $i from 0 through $max-grade {
-  o-arc.angle-#{$i}, o-progress.angle-#{$i}, o-text.angle-#{$i} {
+  o-arc.angle-#{$i}, o-progress.angle-#{$i} {
     --o-angle-composite: calc(#{$i}deg) !important; 
   }
 }
@@ -83,7 +83,7 @@ $max-grade: 360;
 
 $max-gaps: calc($max-orbiters / 2);
 @for $i from 0 through  $max-gaps {
-  o-arc.gap-#{$i}, o-text.gap-#{$i} {
+  o-arc.gap-#{$i} {
     --o-gap: #{$i};
   }
 }
@@ -117,14 +117,14 @@ Can be used in parent elements or in each orbiter class
 }
 @for $i from 1 through $max-orbits {
   .grow-#{$i}x {
-    --o-size-ratio: #{calc($i * 2)} !important;
+    --o-size-ratio: #{calc($i + 1)} !important;
   }
 
   @for $f from 1 through  9  {
     $percent: calc($f);
     $value: calc($f / 10);
   .grow-#{$i}\.#{$percent}x {
-    --o-size-ratio: #{calc($i * 2 + $value)} !important; 
+    --o-size-ratio: #{calc($i + 1 + $value)} !important; 
   }
 }
 
