@@ -117,14 +117,14 @@ Can be used in parent elements or in each orbiter class
 }
 @for $i from 1 through $max-orbits {
   .grow-#{$i}x {
-    --o-size-ratio: #{calc($i + 1)} !important;
+    --o-size-ratio: #{calc($i * 2)} !important;
   }
 
   @for $f from 1 through  9  {
     $percent: calc($f);
-    $value: calc($f / 10);
+    $value: calc($f / 5);
   .grow-#{$i}\.#{$percent}x {
-    --o-size-ratio: #{calc($i + 1 + $value)} !important; 
+    --o-size-ratio: #{calc($i * 2 + $value)} !important; 
   }
 }
 
