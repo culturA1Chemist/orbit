@@ -57,7 +57,7 @@
   --o-blue-light: color-mix(in oklab, var(--o-blue), white 30%);
   --o-blue-dark: color-mix(in oklab, var(--o-blue), black 20%);
   --o-blue-darker: color-mix(in oklab, var(--o-blue), black 40%);
-  --o-blue-black: color-mix(in oklab, var(--o-color), black 78%);
+  --o-blue-black: color-mix(in oklab, var(--o-blue), black 78%);
 
   --o-indigo-white: color-mix(in oklab, var(--o-indigo), white 95%);
   --o-indigo-lighter: color-mix(in oklab, var(--o-indigo), white 75%);
