@@ -26,10 +26,13 @@ place your ⭐ in Orbit! <a href="https://github.com/zumerlab/orbit/stargazers">
 
 **Orbit** is a CSS framework designed for creating radial layouts. It offers simplicity, effectiveness, ease of use, and tremendous versatility for crafting compelling designs. It offers extensive customization options and supports nesting for building intricate designs tailored to your requirements.
 
-
 ## Why Orbit?
 
 Creating radial UIs generally involves using JavaScript or other programming languages to calculate angles, radii, distances, and more. **Orbit** saves you time and effort by enabling you to build these UIs with just CSS.
+
+## Documentation
+
+Learn all about **Orbit** in our [doc site](https://zumerlab.github.io/orbit-docs)!
 
 ## What is radial UI?
 
@@ -63,10 +66,6 @@ With **Orbit**, you can:
 - Easily compose simple or complex radial designs by combining **Orbit** elements.  
 - Use **Orbit** alongside other traditional CSS frameworks.  
 - Get started quickly with our detailed documentation, examples, and guides.  
-
-## Documentation
-
-Learn all about **Orbit** in our [doc site](https://zumerlab.github.io/orbit-docs)!
 
 ## Installation
 
