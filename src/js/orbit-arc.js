@@ -15,8 +15,10 @@ template.innerHTML = `
         pointer-events: stroke;
       }
       .arc {
+      fill: black;
         stroke: var(--o-color, transparent);
         stroke-width:  calc(var(--o-radius) / var(--o-orbit-number) * var(--o-size-ratio, 1));
+        stroke-width: 1;
         transition: stroke 0.3s;
       }
       text {
@@ -60,7 +62,7 @@ export class OrbitArc extends HTMLElement {
   }
 
   update() {
-    const { shape, realRadius, gap, flip } = this.getAttributes()
+    const { shape, realRadius, gap, flip, strokeWithPercentage } = this.getAttributes()
     const path = this.shadowRoot.getElementById('orbitPath')
     const defs = this.shadowRoot.querySelector('defs')
     const text = this.shadowRoot.querySelector('text')
@@ -80,7 +82,7 @@ export class OrbitArc extends HTMLElement {
     const { length, fontSize, textAnchor, fitRange } = this.getTextAttributes()
 
     const angle = this.calculateAngle()
-    const { d } = this.calculateArcParameters(angle, realRadius, gap, flip)
+    const { d } = this.calculateArcParameters(angle, realRadius, gap, flip, strokeWithPercentage)
 
     path.setAttribute('d', d)
 
@@ -162,26 +164,35 @@ export class OrbitArc extends HTMLElement {
       rawAngle = getComputedStyle(this).getPropertyValue('--o-angle')
       arcAngle = calcularExpresionCSS(rawAngle)
     }
-    const strokeWidth = parseFloat(
-      getComputedStyle(this).getPropertyValue('stroke-width') || 1
+    let orbitNumber, size
+   
+    
+    orbitNumber = parseFloat(
+      getComputedStyle(this).getPropertyValue('--o-orbit-number')
     )
-    const strokeWithPercentage = ((strokeWidth / 2) * 100) / orbitRadius / 2
-    let innerOuter = strokeWithPercentage
+    size = parseFloat(
+      getComputedStyle(this).getPropertyValue('--o-size-ratio')
+    )
+   // calc(var(--o-radius) / var(--o-orbit-number) * var(--o-size-ratio, 1));
+    const strokeWidth = orbitRadius / orbitNumber * size
+    const strokeWithPercentage = ((strokeWidth / 2 ) * 100) / orbitRadius / 2
+    console.log( orbitRadius, orbitNumber, size, strokeWidth, strokeWithPercentage)
+    let innerOuter = 0
 
     if (this.classList.contains('outer-orbit')) {
-      innerOuter = strokeWithPercentage * 2
+      innerOuter = strokeWithPercentage * 1
     }
     if (this.classList.contains('quarter-outer-orbit')) {
-      innerOuter = strokeWithPercentage * 1.75
+      innerOuter = strokeWithPercentage * -0.5
     }
     if (this.classList.contains('inner-orbit')) {
-      innerOuter = 0
+      innerOuter = strokeWithPercentage * -1
     }
     if (this.classList.contains('quarter-inner-orbit')) {
-      innerOuter = strokeWithPercentage * 0.75
+      innerOuter = strokeWithPercentage * 0.5
     }
 
-    const realRadius = 50 + innerOuter - strokeWithPercentage
+    const realRadius = 50 + innerOuter 
 
     return {
       orbitRadius,
@@ -195,6 +206,7 @@ export class OrbitArc extends HTMLElement {
       flip,
       fitRange,
       textAnchor,
+      strokeWithPercentage
     }
   }
 
@@ -211,12 +223,12 @@ export class OrbitArc extends HTMLElement {
     return (progress / maxValue) * maxAngle
   }
 
-  calculateArcParameters(angle, realRadius, gap,  flip) {
+  calculateArcParameters(angle, realRadius, gap,  flip, strokeWithPercentage) {
     const radiusX = realRadius / 1
     const radiusY = realRadius / 1
-    let startX, startY, endX, endY, largeArcFlag, d
+    let startX, startY, endX, endY, largeArcFlag, startX1, startY1, endX1, endY1, largeArcFlag1, d
     let adjustedGap = gap * 0.5
-
+    
 
     if (flip) {
       // Coordenadas ajustadas para el inicio del arco (gap incluido)
@@ -230,16 +242,34 @@ export class OrbitArc extends HTMLElement {
       // Generación del path SVG
       d = `M ${startX},${startY} A ${radiusX},${radiusY} 0 ${largeArcFlag} 0 ${endX},${endY}`;
     } else {
+      // upper arc
       // Coordenadas ajustadas para el inicio del arco (gap incluido)
-      startX = 50 + radiusX * Math.cos((-90 + adjustedGap) * (Math.PI / 180));
-      startY = 50 + radiusY * Math.sin((-90 + adjustedGap) * (Math.PI / 180));
+      startX = 50 + (radiusX + strokeWithPercentage) * Math.cos((-90 + adjustedGap) * (Math.PI / 180));
+      startY = 50 + (radiusY + strokeWithPercentage) * Math.sin((-90 + adjustedGap) * (Math.PI / 180));
       // Coordenadas ajustadas para el final del arco (gap incluido)
-      endX = 50 + radiusX * Math.cos(((angle - 90 - adjustedGap) * Math.PI) / 180);
-      endY = 50 + radiusY * Math.sin(((angle - 90 - adjustedGap) * Math.PI) / 180);
+      endX = 50 + (radiusX + strokeWithPercentage) * Math.cos(((angle - 90 - adjustedGap) * Math.PI) / 180);
+      endY = 50 + (radiusY + strokeWithPercentage) * Math.sin(((angle - 90 - adjustedGap) * Math.PI) / 180);
       // Determinación del flag de arco largo
       largeArcFlag = angle <= 180 ? 0 : 1;
+
+      // inner arc
+      // Coordenadas ajustadas para el inicio del arco (gap incluido)
+      startX1 = 50 + (radiusX - strokeWithPercentage) * Math.cos((-90 + (adjustedGap * 1.31847)) * (Math.PI / 180));
+      startY1 = 50 + (radiusY - strokeWithPercentage) * Math.sin((-90 + (adjustedGap * 1.31847)) * (Math.PI / 180));
+      // Coordenadas ajustadas para el final del arco (gap incluido)
+      endX1 = 50 + (radiusX - strokeWithPercentage) * Math.cos(((angle - 90 - (adjustedGap * 1.31847)) * Math.PI) / 180);
+      endY1 = 50 + (radiusY - strokeWithPercentage) * Math.sin(((angle - 90 - (adjustedGap * 1.31847)) * Math.PI) / 180);
+      // Determinación del flag de arco largo
+      largeArcFlag1 = angle <= 180 ? 0 : 1;
+
       // Generación del path SVG
-      d = `M ${startX},${startY} A ${radiusX},${radiusY} 0 ${largeArcFlag} 1 ${endX},${endY}`;
+      d = `
+      M ${startX},${startY} 
+      A ${radiusX + strokeWithPercentage},${radiusY + strokeWithPercentage} 0 ${largeArcFlag} 1 ${endX},${endY}
+      L ${endX1} ${endY1} 
+      A ${radiusX - strokeWithPercentage},${radiusY - strokeWithPercentage} 0 ${largeArcFlag1} 0 ${startX1},${startY1}
+      L ${startX1  + 10 } ${startY1 / 2}
+      Z`;
     }
     return { d }
   }
