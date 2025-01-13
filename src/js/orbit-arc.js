@@ -181,9 +181,9 @@ export class OrbitArc extends HTMLElement {
       getComputedStyle(this).getPropertyValue('--o-size-ratio')
     )
    // calc(var(--o-radius) / var(--o-orbit-number) * var(--o-size-ratio, 1));
-    const strokeWidth = orbitRadius / orbitNumber * size - (0.7 / 2 )
+    const strokeWidth = orbitRadius / orbitNumber * size 
     const strokeWithPercentage = ((strokeWidth / 2 ) * 100) / orbitRadius / 2
-    const gap =  (parseFloat(getComputedStyle(this).getPropertyValue('--o-gap')) + (0.7/ 2) ) * 2 / orbitNumber * 2 / (size * 2) - (0.7 * 2)  || 0 
+    const gap =  (parseFloat(getComputedStyle(this).getPropertyValue('--o-gap'))  ) 
     var innerOuter
 
     if (this.classList.contains('outer-orbit')) {
@@ -237,92 +237,58 @@ export class OrbitArc extends HTMLElement {
     const radiusY = realRadius / 1
     let startX, startY, endX, endY, largeArcFlag, startX1, startY1, endX1, endY1, largeArcFlag1, dShape, pointX, pointX1, pointY, pointY1
     let stroke = 0.7
-    let adjustedGap = gap * 0.5 -  (gap   * ((strokeWithPercentage - innerOuter) / 100)) 
-    const angleGap = gap * 0.5  + (gap  * ((strokeWithPercentage - innerOuter) / 100))
-    let adjustedStroke = stroke   -  (stroke  * ((strokeWithPercentage - innerOuter) / 100))
-    const angleStroke = stroke * 2 - (stroke / 4 * ((strokeWithPercentage - innerOuter) / 100)) * orbitNumber * 4 / size * 4
+    let fangle = angle * Math.PI / 180
+    let adjustedStroke = 0
+    const angleStroke = 0
+    let bigRadius = radiusX + strokeWithPercentage
+    let smallRadius = radiusX - (strokeWithPercentage / 2)
+
+    let bigGap = gap / orbitNumber / 2 / bigRadius
+    const smallGap = gap / orbitNumber / 2  / smallRadius
+    let startAngle = (bigGap) //* (Math.PI / 180)
+    // (-90 + adjustedStroke + adjustedGap) * (Math.PI / 180)
+    // (-90 + angleStroke + (angleGap)) * (Math.PI / 180)
+    let endAngle = (fangle  - bigGap) 
+    // ((angle - 90 - adjustedStroke - adjustedGap) * Math.PI) / 180
+    // ((angle - 90 - angleStroke - (angleGap)) * Math.PI) / 180
+
+    let startAngle1 = ( smallGap)
+    // (-90 + adjustedStroke + adjustedGap) * (Math.PI / 180)
+    // (-90 + angleStroke + (angleGap)) * (Math.PI / 180)
+    let endAngle1 = (fangle  - smallGap) 
+    // ((angle - 90 - adjustedStroke - adjustedGap) * Math.PI) / 180
+    // ((angle - 90 - angleStroke - (angleGap)) * Math.PI) / 180
     
       // upper arc
       // Coordenadas ajustadas para el inicio del arco (gap incluido)
-      startX = 50 + (radiusX + strokeWithPercentage ) * Math.cos((-90 + adjustedStroke + adjustedGap) * (Math.PI / 180));
-      startY = 50 + (radiusY + strokeWithPercentage ) * Math.sin((-90 + adjustedStroke + adjustedGap) * (Math.PI / 180));
+      startX = 50 + bigRadius * Math.cos(startAngle );
+      startY = 50 + bigRadius * Math.sin(startAngle );
       // Coordenadas ajustadas para el final del arco (gap incluido)
-      endX = 50 + (radiusX + strokeWithPercentage ) * Math.cos(((angle - 90 - adjustedStroke - adjustedGap) * Math.PI) / 180);
-      endY = 50 + (radiusY + strokeWithPercentage ) * Math.sin(((angle - 90 - adjustedStroke - adjustedGap) * Math.PI) / 180);
-      // Coordenadas ajustadas para el final del arco (gap incluido)
-      pointX = 50 + (radiusX + strokeWithPercentage ) * Math.cos(((angle + 3 - 90 - adjustedStroke - adjustedGap) * Math.PI) / 180);
-      pointY = 50 + (radiusY + strokeWithPercentage ) * Math.sin(((angle + 3 - 90 - adjustedStroke - adjustedGap) * Math.PI) / 180);
+      endX = 50 + bigRadius * Math.cos(endAngle );
+      endY = 50 + bigRadius * Math.sin(endAngle );
+    
       // Determinación del flag de arco largo
       largeArcFlag = angle <= 180 ? 0 : 1;
 
       // inner arc
       // Coordenadas ajustadas para el inicio del arco (gap incluido)
-      startX1 = 50 + (radiusX - strokeWithPercentage ) * Math.cos((-90 + angleStroke + (angleGap)) * (Math.PI / 180));
-      startY1 = 50 + (radiusY - strokeWithPercentage ) * Math.sin((-90 + angleStroke + (angleGap)) * (Math.PI / 180));
+      startX1 = 50 + smallRadius * Math.cos(startAngle1 );
+      startY1 = 50 + smallRadius * Math.sin(startAngle1 );
       // Coordenadas ajustadas para el final del arco (gap incluido)
-      endX1 = 50 + (radiusX - strokeWithPercentage ) * Math.cos(((angle - 90 - angleStroke - (angleGap)) * Math.PI) / 180);
-      endY1 = 50 + (radiusY - strokeWithPercentage ) * Math.sin(((angle - 90 - angleStroke - (angleGap)) * Math.PI) / 180);
+      endX1 = 50 + smallRadius * Math.cos(endAngle1 );
+      endY1 = 50 + smallRadius * Math.sin(endAngle1 );
       // Coordenadas ajustadas para el final del arco (gap incluido)
-      pointX1 = 50 + (radiusX - strokeWithPercentage ) * Math.cos(((angle + 3 - 90 - angleStroke - (angleGap)) * Math.PI) / 180);
-      pointY1 = 50 + (radiusY - strokeWithPercentage ) * Math.sin(((angle + 3 - 90 - angleStroke - (angleGap)) * Math.PI) / 180);
+    
       // Determinación del flag de arco largo
       largeArcFlag1 = angle <= 180 ? 0 : 1;
 
-      // Generación del path SVG
-      /**
-      d = `
-      M ${startX},${startY} 
-      A ${radiusX + strokeWithPercentage},${radiusY + strokeWithPercentage} 0 ${largeArcFlag} 1 ${endX},${endY}
-      L ${endX1 + startY1 } ${endY1 + 5} 
-      L ${endX1} ${endY1} 
-      A ${radiusX - strokeWithPercentage},${radiusY - strokeWithPercentage} 0 ${largeArcFlag1} 0 ${startX1},${startY1}
-      L ${startX1  + 5 } ${0}
-      Z`;
-
-
-      L ${(endX + endX1) / 2 + 1} ${(endY + endY1) / 2} 
-
-        L ${startX1  + 1 } ${(startY + startY1) / 2} 
-
-
-normal
- dShape = `
-      M ${startX},${startY} 
-      A ${radiusX + strokeWithPercentage},${radiusY + strokeWithPercentage} 0 ${largeArcFlag} 1 ${endX},${endY}
-      L ${endX1} ${endY1} 
-      A ${radiusX - strokeWithPercentage},${radiusY - strokeWithPercentage} 0 ${largeArcFlag1} 0 ${startX1},${startY1}
-      Z`;
-    
-circulo
-
-dShape = `
-      M ${startX},${startY} 
-      A ${radiusX + strokeWithPercentage},${radiusY + strokeWithPercentage} 0 ${largeArcFlag} 1 ${endX},${endY}
-      A ${(strokeWithPercentage)}, ${(strokeWithPercentage)} 0 0 1 ${endX1},${endY1} 
-      A ${radiusX - strokeWithPercentage},${radiusY - strokeWithPercentage} 0 ${largeArcFlag1} 0 ${startX1},${startY1}
-      A ${(strokeWithPercentage)}, ${(strokeWithPercentage)} 0 0 1  ${startX},${startY}  // 0 0 0 forma conica
-      Z`;
-
-arrow
-
-dShape = `
-      M ${startX},${startY} 
-      A ${radiusX + strokeWithPercentage},${radiusY + strokeWithPercentage} 0 ${largeArcFlag} 1 ${endX},${endY}
-       L ${(pointX + pointX1 ) / 2 }  ${(pointY + pointY1) / 2} 
-        L ${endX1} ${endY1} 
-      A ${radiusX - strokeWithPercentage},${radiusY - strokeWithPercentage} 0 ${largeArcFlag1} 0 ${startX1},${startY1}
-      A ${(strokeWithPercentage)}, ${(strokeWithPercentage)} 0 0 1  ${startX},${startY} 
-       L ${startX1  + 3 } ${(startY + startY1) / 2} 
-      Z`;
-
-
-       */
+      console.log(gap, smallRadius, bigRadius, smallGap, bigGap)
       dShape = `
       M ${startX},${startY} 
-      A ${radiusX + strokeWithPercentage},${radiusY + strokeWithPercentage} 0 ${largeArcFlag} 1 ${endX},${endY}
+      A ${bigRadius},${bigRadius} 0 ${largeArcFlag} 1 ${endX},${endY}
      
        L ${endX1} ${endY1} 
-      A ${radiusX - strokeWithPercentage},${radiusY - strokeWithPercentage} 0 ${largeArcFlag1} 0 ${startX1},${startY1}
+      A ${smallRadius},${smallRadius} 0 ${largeArcFlag1} 0 ${startX1},${startY1}
       
       Z`;
     
