@@ -19,8 +19,7 @@ template.innerHTML = `
       .shape-arc {
       fill: black;
         stroke: var(--o-color,black);
-        stroke-width:  calc(var(--o-radius) / var(--o-orbit-number) * var(--o-size-ratio, 1));
-        stroke-width: 0.7;
+        stroke-width: 1;
         transition: stroke 0.3s;
        
          stroke-linejoin: round;
@@ -233,64 +232,49 @@ export class OrbitArc extends HTMLElement {
   }
 
   calculateArcParameters(angle, realRadius, gap,  flip, strokeWithPercentage, strokeWidth, innerOuter, orbitNumber, size) {
-    const radiusX = realRadius / 1
-    const radiusY = realRadius / 1
+    const radiusX = realRadius
     let startX, startY, endX, endY, largeArcFlag, startX1, startY1, endX1, endY1, largeArcFlag1, dShape, pointX, pointX1, pointY, pointY1
-    let stroke = 0.7
-    let fangle = angle * Math.PI / 180
-    let adjustedStroke = 0
-    const angleStroke = 0
+    let stroke = 1
+    let offset = Math.PI / 2
+    let fangle =  angle * Math.PI / 180
     let bigRadius = radiusX + strokeWithPercentage
-    let smallRadius = radiusX - (strokeWithPercentage / 2)
-
-    let bigGap = gap / orbitNumber / 2 / bigRadius
-    const smallGap = gap / orbitNumber / 2  / smallRadius
-    let startAngle = (bigGap) //* (Math.PI / 180)
-    // (-90 + adjustedStroke + adjustedGap) * (Math.PI / 180)
-    // (-90 + angleStroke + (angleGap)) * (Math.PI / 180)
-    let endAngle = (fangle  - bigGap) 
-    // ((angle - 90 - adjustedStroke - adjustedGap) * Math.PI) / 180
-    // ((angle - 90 - angleStroke - (angleGap)) * Math.PI) / 180
-
-    let startAngle1 = ( smallGap)
-    // (-90 + adjustedStroke + adjustedGap) * (Math.PI / 180)
-    // (-90 + angleStroke + (angleGap)) * (Math.PI / 180)
-    let endAngle1 = (fangle  - smallGap) 
-    // ((angle - 90 - adjustedStroke - adjustedGap) * Math.PI) / 180
-    // ((angle - 90 - angleStroke - (angleGap)) * Math.PI) / 180
+    let smallRadius = (radiusX - strokeWithPercentage) !== 0 ? radiusX - strokeWithPercentage : radiusX
+    let bigGap = (gap + stroke * 2) / orbitNumber / 2 / bigRadius
+    const smallGap = (gap + stroke * 2)  / orbitNumber / 2  / smallRadius
+    let startAngle = bigGap  - offset
+    let endAngle = fangle  - bigGap - offset
+    let startAngle1 = smallGap - offset
+    let endAngle1 = fangle  - smallGap - offset
     
-      // upper arc
-      // Coordenadas ajustadas para el inicio del arco (gap incluido)
-      startX = 50 + bigRadius * Math.cos(startAngle );
-      startY = 50 + bigRadius * Math.sin(startAngle );
-      // Coordenadas ajustadas para el final del arco (gap incluido)
-      endX = 50 + bigRadius * Math.cos(endAngle );
-      endY = 50 + bigRadius * Math.sin(endAngle );
-    
-      // Determinación del flag de arco largo
-      largeArcFlag = angle <= 180 ? 0 : 1;
+    // upper arc
+    // Coordenadas ajustadas para el inicio del arco (gap incluido)
+    startX = 50 + bigRadius * Math.cos(startAngle );
+    startY = 50 + bigRadius * Math.sin(startAngle );
+    // Coordenadas ajustadas para el final del arco (gap incluido)
+    endX = 50 + bigRadius * Math.cos(endAngle );
+    endY = 50 + bigRadius * Math.sin(endAngle );
+  
+    // Determinación del flag de arco largo
+    largeArcFlag = angle <= 180 ? 0 : 1;
 
-      // inner arc
-      // Coordenadas ajustadas para el inicio del arco (gap incluido)
-      startX1 = 50 + smallRadius * Math.cos(startAngle1 );
-      startY1 = 50 + smallRadius * Math.sin(startAngle1 );
-      // Coordenadas ajustadas para el final del arco (gap incluido)
-      endX1 = 50 + smallRadius * Math.cos(endAngle1 );
-      endY1 = 50 + smallRadius * Math.sin(endAngle1 );
-      // Coordenadas ajustadas para el final del arco (gap incluido)
-    
-      // Determinación del flag de arco largo
-      largeArcFlag1 = angle <= 180 ? 0 : 1;
+    // inner arc
+    // Coordenadas ajustadas para el inicio del arco (gap incluido)
+    startX1 = 50 + smallRadius * Math.cos(startAngle1 );
+    startY1 = 50 + smallRadius * Math.sin(startAngle1 );
+    // Coordenadas ajustadas para el final del arco (gap incluido)
+    endX1 = 50 + smallRadius * Math.cos(endAngle1 );
+    endY1 = 50 + smallRadius * Math.sin(endAngle1 );
+    // Coordenadas ajustadas para el final del arco (gap incluido)
+  
+    // Determinación del flag de arco largo
+    largeArcFlag1 = angle <= 180 ? 0 : 1;
 
-      console.log(gap, smallRadius, bigRadius, smallGap, bigGap)
-      dShape = `
-      M ${startX},${startY} 
-      A ${bigRadius},${bigRadius} 0 ${largeArcFlag} 1 ${endX},${endY}
-     
-       L ${endX1} ${endY1} 
-      A ${smallRadius},${smallRadius} 0 ${largeArcFlag1} 0 ${startX1},${startY1}
-      
-      Z`;
+    dShape = `
+    M ${startX},${startY} 
+    A ${bigRadius},${bigRadius} 0 ${largeArcFlag} 1 ${endX},${endY}
+    L ${endX1} ${endY1} 
+    A ${smallRadius},${smallRadius} 0 ${largeArcFlag1} 0 ${startX1},${startY1}
+    Z`;
     
     return { dShape }
   }
