@@ -19,8 +19,3 @@ o-arc {
   transform: rotate(calc(var(--o-from) + var(--o-angle-composite)));
 }
 
-
-o-arc[flip]:not([value]), o-arc.flip:not([value]){
-  --o-angle-composite: var(--o-angle) * calc(var(--o-orbit-child-number) + 1) * var(--o-direction, 1);
-}
-
