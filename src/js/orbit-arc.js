@@ -1,40 +1,34 @@
-
+/*
+- acomodar variables y propiedades css
+- incporar ending shapes
+*/
 const template = document.createElement('template')
 template.innerHTML = `
    <style>
-     :host {
-      
-     }
      svg {
        width: 100%;
        height: 100%;
        overflow: visible;
        pointer-events: none;
-     
      }
       svg * {
         pointer-events: stroke;
-       
       }
       .shape-arc {
-      fill: black;
+       fill: transparent;
         stroke: var(--o-color,black);
         stroke-width: 1;
         transition: stroke 0.3s;
-       
-         stroke-linejoin: round;
+        stroke-linejoin: round;
       }
       .text-arc {
-        stroke: transparent;
-        stroke-width: 0;
-       
+        stroke: red;
+        stroke-width: 0.2;
       }
       text {
         color: var(--o-text-color, currentcolor);
       }
-      textPath {
      
-      }
       :host(:hover) text {
         color: var(--o-hover-text-color, var(--o-text-color));
       }
@@ -44,7 +38,7 @@ template.innerHTML = `
    </style>
    <svg viewBox="0 0 100 100">
      <path id="orbitShape" class="shape-arc" shape-rendering="geometricPrecision" vector-effect="non-scaling-stroke" fill="transparent"></path>
-     <path id="orbitPath" class="text-arc" shape-rendering="geometricPrecision" vector-effect="non-scaling-stroke" fill="transparent"></path>
+     <path id="orbitPath" class="text-arc" shape-rendering="geometricPrecision" vector-effect="non-scaling-stroke" fill="transparent" ></path>
      <text>
         <textPath href="#orbitPath"  alignment-baseline="middle"></textPath>
       </text>
@@ -79,15 +73,11 @@ export class OrbitArc extends HTMLElement {
     
     const text = this.shadowRoot.querySelector('text')
     const textPath = this.shadowRoot.querySelector('textPath')
-   // if (shape === 'circle') path.setAttribute('stroke-linecap', 'round')
     
     const { length, fontSize, textAnchor, fitRange } = this.getTextAttributes()
-
     const angle = this.calculateAngle()
-    
     const { dShape } = this.calculateArcParameters(angle, realRadius, gap, flip, strokeWithPercentage, strokeWidth, innerOuter, orbitNumber, size)
     const { dPath } = this.calculateTextArcParameters(angle, realRadius, gap, flip, strokeWithPercentage)
-
 
     orbitShape.setAttribute('d', dShape)
     orbitPath.setAttribute('d', dPath)
@@ -104,12 +94,11 @@ export class OrbitArc extends HTMLElement {
     }
 
     if (fitRange) {
-      textPath.parentElement.setAttribute('textLength', path.getTotalLength())
+      textPath.parentElement.setAttribute('textLength', textPath.getTotalLength())
     }
 
     text.style.fontSize = `calc(${fontSize} * (100 / (${length}) * (12 /  var(--o-orbit-number) ))`
     textPath.textContent = this.textContent
-
   }
 
   getTextAttributes() {
@@ -121,68 +110,47 @@ export class OrbitArc extends HTMLElement {
     const orbitRadius = parseFloat(
       getComputedStyle(this).getPropertyValue('r') || 0
     )
-  
-                          
-
     const shape = this.getAttribute('shape') || 'none'
     const flip = this.hasAttribute('flip') || this.classList.contains('flip')
     const fitRange =
       this.hasAttribute('fit-range') ||
       this.classList.contains('fit-range') ||
       false
-    const length = parseFloat(
-      getComputedStyle(this).getPropertyValue('--o-force')
-    )
+    const length = parseFloat(getComputedStyle(this).getPropertyValue('--o-force'))
     const textAnchor = this.getAttribute('text-anchor') || 'middle'
     const fontSize =
       getComputedStyle(this).getPropertyValue('font-size') ||
       getComputedStyle(this).getPropertyValue('--font-size')
     const value = parseFloat(this.getAttribute('value'))
-    const range = parseFloat(
-      getComputedStyle(this).getPropertyValue('--o-range') || 360
-    )
+    const range = parseFloat(getComputedStyle(this).getPropertyValue('--o-range') || 360)
     let rawAngle
     let arcAngle
     if (value) {
       arcAngle = this.getProgressAngle(range, value)
-
       const prevElement = this.previousElementSibling
       const stackOffset = prevElement
-        ? parseFloat(
-            getComputedStyle(prevElement).getPropertyValue('--o_stack')
-          )
+        ? parseFloat(getComputedStyle(prevElement).getPropertyValue('--o_stack'))
         : 0
       this.style.setProperty('--o_stack', stackOffset + arcAngle)
       if (stackOffset >= 0 && flip) {
-        this.style.setProperty(
-          '--o-angle-composite',
-          parseFloat(stackOffset ) + 'deg'
-        )
+        this.style.setProperty('--o-angle-composite',parseFloat(stackOffset ) + 'deg')
       }
 
       if (stackOffset > 0 && !flip) {
-        this.style.setProperty(
-          '--o-angle-composite',
-          parseFloat(stackOffset) + 'deg'
-        )
+        this.style.setProperty('--o-angle-composite', parseFloat(stackOffset) + 'deg')
       }
     } else {
       rawAngle = getComputedStyle(this).getPropertyValue('--o-angle')
       arcAngle = calcularExpresionCSS(rawAngle)
     }
     let orbitNumber, size
+
+    orbitNumber = parseFloat(getComputedStyle(this).getPropertyValue('--o-orbit-number'))
+    size = parseFloat(getComputedStyle(this).getPropertyValue('--o-size-ratio'))
    
-    
-    orbitNumber = parseFloat(
-      getComputedStyle(this).getPropertyValue('--o-orbit-number')
-    )
-    size = parseFloat(
-      getComputedStyle(this).getPropertyValue('--o-size-ratio')
-    )
-   // calc(var(--o-radius) / var(--o-orbit-number) * var(--o-size-ratio, 1));
-    const strokeWidth = orbitRadius / orbitNumber * size 
+    const strokeWidth = orbitRadius / orbitNumber * size - 1
     const strokeWithPercentage = ((strokeWidth / 2 ) * 100) / orbitRadius / 2
-    const gap =  (parseFloat(getComputedStyle(this).getPropertyValue('--o-gap'))  ) 
+    const gap =  parseFloat(getComputedStyle(this).getPropertyValue('--o-gap'))
     var innerOuter
 
     if (this.classList.contains('outer-orbit')) {
@@ -219,9 +187,8 @@ export class OrbitArc extends HTMLElement {
   }
 
   calculateAngle() {
-    const { arcAngle, gap, flip } = this.getAttributes()
-    let calculation = flip ? arcAngle : arcAngle
-    return calculation
+    const { arcAngle} = this.getAttributes()
+    return arcAngle
   }
 
   getProgressAngle(maxAngle, value) {
@@ -247,57 +214,61 @@ export class OrbitArc extends HTMLElement {
     let endAngle1 = fangle  - smallGap - offset
     
     // upper arc
-    // Coordenadas ajustadas para el inicio del arco (gap incluido)
     startX = 50 + bigRadius * Math.cos(startAngle );
     startY = 50 + bigRadius * Math.sin(startAngle );
-    // Coordenadas ajustadas para el final del arco (gap incluido)
     endX = 50 + bigRadius * Math.cos(endAngle );
     endY = 50 + bigRadius * Math.sin(endAngle );
-  
-    // Determinación del flag de arco largo
-    largeArcFlag = angle <= 180 ? 0 : 1;
-
+    pointX = 50 + bigRadius * Math.cos(endAngle + 3 * Math.PI / 180);
+    pointY = 50 + bigRadius  * Math.sin(endAngle + 3 * Math.PI / 180);
     // inner arc
-    // Coordenadas ajustadas para el inicio del arco (gap incluido)
     startX1 = 50 + smallRadius * Math.cos(startAngle1 );
     startY1 = 50 + smallRadius * Math.sin(startAngle1 );
-    // Coordenadas ajustadas para el final del arco (gap incluido)
     endX1 = 50 + smallRadius * Math.cos(endAngle1 );
     endY1 = 50 + smallRadius * Math.sin(endAngle1 );
-    // Coordenadas ajustadas para el final del arco (gap incluido)
-  
+    pointX1 = 50 + smallRadius * Math.cos(endAngle1 + 3 * Math.PI / 180);
+    pointY1 = 50 + smallRadius * Math.sin(endAngle1 + 3 * Math.PI / 180);
     // Determinación del flag de arco largo
-    largeArcFlag1 = angle <= 180 ? 0 : 1;
+    largeArcFlag = angle <= 180 ? 0 : 1;
+// arrow
+// L ${(pointX + pointX1) / 2}  ${(pointY + pointY1) / 2} 
+// L ${startX1 + 3} ${(startY + startY1) / 2} 
 
+
+// circle
+// A ${(strokeWithPercentage)}, ${(strokeWithPercentage)} 0 0 1 ${endX1},${endY1} 
+// A ${(strokeWithPercentage)}, ${(strokeWithPercentage)} 0 0 1 ${startX},${startY}
+
+// bullet
+// A ${(strokeWithPercentage)}, ${(strokeWithPercentage)} 0 0 1 ${endX1},${endY1} 
+// A ${(strokeWithPercentage)}, ${(strokeWithPercentage)} 0 0 0 ${startX},${startY}
     dShape = `
     M ${startX},${startY} 
     A ${bigRadius},${bigRadius} 0 ${largeArcFlag} 1 ${endX},${endY}
-    L ${endX1} ${endY1} 
-    A ${smallRadius},${smallRadius} 0 ${largeArcFlag1} 0 ${startX1},${startY1}
+    L ${endX1} ${endY1}
+    A ${smallRadius},${smallRadius} 0 ${largeArcFlag} 0 ${startX1},${startY1}
     Z`;
     
     return { dShape }
   }
 
   calculateTextArcParameters(angle, realRadius, gap,  flip, strokeWithPercentage) {
-    const radiusX = realRadius / 1
-    const radiusY = realRadius / 1
+    const radiusX = realRadius
+    const radiusY = realRadius
     let startX, startY, endX, endY, largeArcFlag, dPath
     let adjustedGap = gap * 0.5
 
     if (flip) {
-      // Coordenadas ajustadas para el inicio del arco (gap incluido)
-      startX = 50 + radiusX * Math.cos((-90 - adjustedGap) * (Math.PI / 180));
-      startY = 50 + radiusY * Math.sin((-90 - adjustedGap) * (Math.PI / 180));
+      endX = 50 + radiusX * Math.cos((-90 + adjustedGap) * (Math.PI / 180));
+      endY = 50 + radiusY * Math.sin((-90 + adjustedGap) * (Math.PI / 180));
       // Coordenadas ajustadas para el final del arco (gap incluido)
-      endX = 50 + radiusX * Math.cos(((270 - angle + adjustedGap) * Math.PI) / 180);
-      endY = 50 + radiusY * Math.sin(((270 - angle + adjustedGap) * Math.PI) / 180);
+      startX = 50 + radiusX * Math.cos(((angle - 90 - adjustedGap) * Math.PI) / 180);
+      startY = 50 + radiusY * Math.sin(((angle - 90 - adjustedGap) * Math.PI) / 180);
       // Determinación del flag de arco largo
       largeArcFlag = angle <= 180 ? 0 : 1;
       // Generación del path SVG
       dPath = `M ${startX},${startY} A ${radiusX},${radiusY} 0 ${largeArcFlag} 0 ${endX},${endY}`;
     } else {
-      // Coordenadas ajustadas para el inicio del arco (gap incluido)
+
       startX = 50 + radiusX * Math.cos((-90 + adjustedGap) * (Math.PI / 180));
       startY = 50 + radiusY * Math.sin((-90 + adjustedGap) * (Math.PI / 180));
       // Coordenadas ajustadas para el final del arco (gap incluido)
@@ -308,62 +279,9 @@ export class OrbitArc extends HTMLElement {
       // Generación del path SVG
       dPath = `M ${startX},${startY} A ${radiusX},${radiusY} 0 ${largeArcFlag} 1 ${endX},${endY}`;
     }
- 
     return { dPath }
-    
   }
 
-  createMarker(id, position = 'end') {
-    const { shape } = this.getAttributes()
-    const marker = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'marker'
-    )
-    marker.setAttribute('id', id)
-    marker.setAttribute('viewBox', '0 0 10 10')
-    position === 'start' && shape !== 'circle'
-      ? marker.setAttribute('refX', '2')
-      : position === 'start' && shape === 'circle'
-      ? marker.setAttribute('refX', '5')
-      : marker.setAttribute('refX', '0.1')
-    marker.setAttribute('refY', '5')
-    marker.setAttribute('markerWidth', '1')
-    marker.setAttribute('markerHeight', '1')
-    marker.setAttribute('orient', 'auto')
-    marker.setAttribute('markerUnits', 'strokeWidth')
-    marker.setAttribute('fill', 'context-stroke')
-
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-    const shapes = {
-      arrow: {
-        head: 'M 0 0 L 2 5 L 0 10 z',
-        tail: 'M 2 0 L 0 0 L 1 5 L 0 10 L 2 10 L 2 5 z',
-      },
-      slash: {
-        head: 'M 0 0 L 0 0 L 1 5 L 2 10 L 0 10 L 0 5 z',
-        tail: 'M 2 0 L 0 0 L 1 5 L 2 10 L 2 10 L 2 5 z',
-      },
-      backslash: {
-        head: 'M 0 0 L 2 0 L 1 5 L 0 10 L 0 10 L 0 5 z',
-        tail: 'M 2 0 L 2 0 L 1 5 L 0 10 L 2 10 L 2 5 z',
-      },
-      circle: {
-        head: 'M 0 0 C 7 0 7 10 0 10 z',
-        tail: 'M 6 0 C -1 0 -1 10 6 10 z',
-      },
-      zigzag: {
-        head: 'M 1 0 L 0 0 L 0 5 L 0 10 L 1 10 L 2 7 L 1 5 L 2 3 z',
-        tail: 'M 0 0 L 2 0 L 2 5 L 2 10 L 0 10 L 1 7 L 0 5 L 1 3 z',
-      },
-    }
-    position === 'end'
-      ? path.setAttribute('d', shapes[shape].head)
-      : path.setAttribute('d', shapes[shape].tail)
-
-    marker.appendChild(path)
-
-    return marker
-  }
 }
 
 function calcularExpresionCSS(cssExpression) {
