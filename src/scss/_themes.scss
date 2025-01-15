@@ -25,14 +25,35 @@
 }
 
 o-progress {
-  --o-color: currentcolor;
-  --o-hover-color: unset;
-  --o-background-color: transparent;
+  --o-fill: var(--o-gray-light);
+  --o-stroke: var(--o-fill);
+  --o-stroke-width: 1;
+  --o-back-fill: transparent;
+  --o-back-stroke: none;
+  --o-back-stroke-width: 1;
+}
+
+o-progress:hover {
+  --o-fill: var(--o-gray-light);
+  --o-stroke: var(--o-fill);
+  --o-stroke-width: 1;
+  --o-back-fill: transparent;
+  --o-back-stroke: none;
+  --o-back-stroke-width: 1;
 }
 
 o-arc {
-  --o-color: unset;
-  --o-hover-color: unset;
+  --o-fill: var(--o-gray-light);
+  --o-stroke: var(--o-fill);
+  --o-stroke-width: 1;
+  --o-color: currentcolor;
+}
+
+o-arc:hover {
+  --o-fill: var(--o-gray-light);
+  --o-stroke: var(--o-fill);
+  --o-stroke-width: 1;
+  --o-color: currentcolor;
 }
 
 /* Dev theme based on default*/
@@ -67,14 +88,35 @@ o-arc {
   }
   
   o-progress {
-    --o-color: currentColor;
-    --o-hover-color: unset;
-    --o-background-color: transparent;
+    --o-fill: var(--o-gray-light);
+    --o-stroke: var(--o-fill);
+    --o-stroke-width: 1;
+    --o-back-fill: transparent;
+    --o-back-stroke: none;
+    --o-back-stroke-width: 1;
+  }
+
+  o-progress:hover {
+    --o-fill: var(--o-gray-light);
+    --o-stroke: var(--o-fill);
+    --o-stroke-width: 1;
+    --o-back-fill: transparent;
+    --o-back-stroke: none;
+    --o-back-stroke-width: 1;
   }
   
   o-arc {
-    --o-color: currentColor;
-    --o-hover-color: unset;
+    --o-fill: var(--o-gray-light);
+    --o-stroke: var(--o-fill);
+    --o-stroke-width: 1;
+    --o-color: currentcolor;
+  }
+
+  o-arc:hover {
+    --o-fill: var(--o-gray-light);
+    --o-stroke: var(--o-fill);
+    --o-stroke-width: 1;
+    --o-color: currentcolor;
   }
   
 }
@@ -82,40 +124,61 @@ o-arc {
 /* cyan theme based on default*/
 
 .theme-cyan {
-.gravity-spot {
-  background: none;
-  border: none; 
-}
+  .gravity-spot {
+    background: none;
+    border: none; 
+  }
 
-.orbit, [class*='orbit-'] {
-  border: 1px solid transparent;
-}
+  .orbit, [class*='orbit-'] {
+    border: 1px solid transparent;
+  }
 
-.satellite {
-  background-color: transparent;
-  border: 1px solid var(--o-cyan);
-}
+  .satellite {
+    background-color: transparent;
+    border: 1px solid var(--o-cyan);
+  }
 
-.vector {
-  border: none;
-  background: var(--o-cyan);
-}
+  .vector {
+    border: none;
+    background: var(--o-cyan);
+  }
 
-.side {
-  border: none;
-  background: var(--o-cyan);
-}
+  .side {
+    border: none;
+    background: var(--o-cyan);
+  }
 
-o-progress {
-  --o-color: var(--o-cyan);
-  --o-hover-color: var(--o-cyan);
-  --o-background-color: transparent;
-}
+  o-progress {
+    --o-fill: var(--o-cyan-light);
+    --o-stroke: var(--o-fill);
+    --o-stroke-width: 1;
+    --o-back-fill: transparent;
+    --o-back-stroke: none;
+    --o-back-stroke-width: 1;
+  }
 
-o-arc {
-  --o-color: var(--o-cyan);
-  --o-hover-color: unset;
-}
+  o-progress:hover {
+    --o-fill: var(--o-gray-light);
+    --o-stroke: var(--o-fill);
+    --o-stroke-width: 1;
+    --o-back-fill: transparent;
+    --o-back-stroke: none;
+    --o-back-stroke-width: 1;
+  }
+
+  o-arc {
+    --o-fill: var(--o-cyan-light);
+    --o-stroke: var(--o-fill);
+    --o-stroke-width: 1;
+    --o-color: var(--o-cyan-darker);
+  }
+
+  o-arc:hover {
+    --o-fill: var(--o-gray-light);
+    --o-stroke: var(--o-fill);
+    --o-stroke-width: 1;
+    --o-color: currentcolor;
+  }
 
 }
 
