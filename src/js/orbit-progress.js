@@ -79,7 +79,6 @@ export class OrbitProgress extends HTMLElement {
     const strokeWidth = parseFloat(getComputedStyle(this).getPropertyValue('--o-stroke-width'))
     const arcHeight = orbitRadius / orbitNumber * size - strokeWidth + 0.3 // 0.3 tries to fix bug when render arcs
     const arcHeightPercentage = ((arcHeight / 2 ) * 100) / orbitRadius / 2
-    const realRadius = 50 + innerOuter
     const maxAngle = range;
     const maxValue = parseFloat(this.getAttribute('max')) || 100;
     let innerOuter
@@ -94,6 +93,7 @@ export class OrbitProgress extends HTMLElement {
     } else {
       innerOuter = 0
     }
+    const realRadius = 50 + innerOuter
     return {
       orbitRadius,
       progress,
