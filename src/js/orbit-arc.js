@@ -27,13 +27,11 @@ template.innerHTML = `
         fill: var(--o-fill);
         stroke: var(--o-stroke);
         stroke-width: var(--o-stroke-width);
+        transition: all 0.3s;
+        stroke-linejoin: round;
       }
       text {
        fill: var(--o-color);
-      }
-      #orbitShape {
-        transition: all 0.3s;
-        stroke-linejoin: round;
       }
       #orbitPath {
         fill: transparent;
@@ -103,9 +101,6 @@ export class OrbitArc extends HTMLElement {
   getAttributes() {
     let rawAngle, arcAngle, orbitNumber, size, innerOuter
     const strokeWidth = parseFloat(getComputedStyle(this).getPropertyValue('--o-stroke-width'))
-    const fill = getComputedStyle(this).getPropertyValue('--o-fill') 
-    const stroke = getComputedStyle(this).getPropertyValue('--o-stroke')
-   
     const orbitRadius = parseFloat(getComputedStyle(this).getPropertyValue('r') || 0)
     const shape = this.getAttribute('shape') || 'none'
     const flip = this.hasAttribute('flip') || this.classList.contains('flip')
@@ -141,7 +136,7 @@ export class OrbitArc extends HTMLElement {
     const arcHeight = orbitRadius / orbitNumber * size - strokeWidth + 0.3 // 0.3 tries to fix bug when render arcs
     const arcHeightPercentage = ((arcHeight / 2 ) * 100) / orbitRadius / 2
     const gap =  parseFloat(getComputedStyle(this).getPropertyValue('--o-gap'))
-  
+    
     if (this.classList.contains('outer-orbit')) {
       innerOuter = arcHeightPercentage
     } else if (this.classList.contains('quarter-outer-orbit')) {
@@ -172,9 +167,7 @@ export class OrbitArc extends HTMLElement {
       innerOuter,
       orbitNumber,
       size,
-      strokeWidth,
-      stroke,
-      fill
+      strokeWidth
     }
   }
 
