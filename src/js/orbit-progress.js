@@ -1,253 +1,158 @@
-/**
- * color proposal
- * o-progress.color -> change css vars
- * o-progress.background-color -> change css vars
- * o-prograss.hover-color -> change css vars
- * 
- * attributes
- * shape && circle|box|etc class
- * max ok but -> check
- * value ok
- */
 export class OrbitProgress extends HTMLElement {
-
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
     this.shadowRoot.innerHTML = `
       <style>
         :host {
-          display: block;
-        }
-        svg {
+        --o-fill: var(--o-gray-light);
+        --o-stroke: var(--o-fill);
+        --o-stroke-width: 1;
+        --o-back-fill: transparent;
+        --o-back-stroke: none;
+        --o-back-stroke-width: 1;
+      }
+      :host(:hover){
+        --o-fill: var(--o-gray-light);
+        --o-stroke: var(--o-fill);
+        --o-stroke-width: 1;
+        --o-back-fill: transparent;
+        --o-back-stroke: none;
+        --o-back-stroke-width: 1;
+      }
+      svg {
           width: 100%;
           height: 100%;
           overflow: visible;
           pointer-events: none;
         }
         svg * {
-          pointer-events: stroke;
+          pointer-events: visiblePainted;
         }
         .progress-bar {
-          fill: transparent;
-          stroke: var(--o-color);
-          transition: stroke 0.3s;
+          fill: var(--o-fill);
+          stroke: var(--o-stroke);
+          stroke-width: var(--o-stroke-width);
+          transition: all 0.3s;
+          stroke-linejoin: round;
         }
         .progress-bg {
-          stroke: var(--o-background-color, transparent);
-        }
-        :host(:hover) .progress-bar {
-          stroke: var(--o-hover-color, var(--o-color));
-          
+          fill: var(--o-back-fill);
+          stroke: var(--o-back-stroke);
+          stroke-width: var(--o-back-stroke-width);
         }
       </style>
       <svg viewBox="0 0 100 100">
-        <defs></defs>
-        <path class="progress-bg"></path>
-        <path class="progress-bar"></path>
+        <path class="progress-bg" shape-rendering="geometricPrecision" vector-effect="non-scaling-stroke"></path>
+        <path class="progress-bar" shape-rendering="geometricPrecision" vector-effect="non-scaling-stroke"></path>
       </svg>
-    `;
-
-   
+    `
   }
-
-  
-
   connectedCallback() {
-    this.update();
-
-    const observer = new MutationObserver((mutations) => {
+    this.update()
+    this.observer = new MutationObserver((mutations) => {
+      this.observer.disconnect()
       mutations.forEach((mutation) => {
-          this.update();
-      });
-    });
-  
-    observer.observe(this, { attributes: true, childList: true });
+        this.update()
+      })
+      this.observer.observe(this, { attributes: true, childList: true })
+    })
+    this.observer.observe(this, { attributes: true, childList: true })
   }
-
   update() {
-    const { shape } = this.getAttributes();
-    const svg = this.shadowRoot.querySelector('svg');
-    if (shape !== 'none' && shape !== 'circle') {
-      const defs = this.createDefs();
-      defs.appendChild(this.createMarker('head', 'end'));
-      defs.appendChild(this.createMarker('tail', 'start'));
-      svg.querySelector('defs').replaceWith(defs);
-    }
     const progressBg = this.shadowRoot.querySelector('.progress-bg');
     const progressBar = this.shadowRoot.querySelector('.progress-bar');
     this.updateArc(progressBg, true);
     this.updateArc(progressBar, false);
-    
   }
-
-  createSVGElement() {
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('viewBox', '0 0 100 100');
-    svg.setAttribute('width', this.getAttribute('width') || '100%');
-    svg.setAttribute('height', this.getAttribute('height') || '100%');
-    return svg;
-  }
-
   updateArc(arc, full) {
-    const {
-      strokeWidth,
-      realRadius,
-      ellipseX,
-      ellipseY,
-      progressBarColor,
-      progressBgColor,
-      maxAngle,
-      shape
-    } = this.getAttributes();
-    const angle = this.getProgressAngle(maxAngle, full);
-    const { d } = this.calculateArcParameters(angle, realRadius, ellipseX, ellipseY);
+    const { d } = this.calculateArcParameters(full);
     arc.setAttribute('d', d);
-    arc.setAttribute('stroke', full ? progressBgColor : progressBarColor);
-    arc.setAttribute('fill', 'transparent');
-    if (shape === 'circle') arc.setAttribute('stroke-linecap', 'round');
-    if (shape !== 'none' && shape !== 'circle' && CSS.supports('fill', 'context-stroke')) {
-      arc.setAttribute('marker-end', 'url(#head)');
-      arc.setAttribute('marker-start', 'url(#tail)');
-    }
-    arc.setAttribute('stroke-width', strokeWidth);
-    arc.setAttribute('vector-effect', 'non-scaling-stroke');
   }
-
   getAttributes() {
-    const orbitRadius = parseFloat(
-      getComputedStyle(this).getPropertyValue('r') || 0
-    );
-    const range = parseFloat(
-      getComputedStyle(this).getPropertyValue('--o-range') || 360
-    );
-    const ellipseX = parseFloat(
-      getComputedStyle(this).getPropertyValue('--o-ellipse-x') || 1
-    );
-    const ellipseY = parseFloat(
-      getComputedStyle(this).getPropertyValue('--o-ellipse-y') || 1
-    );
-    const progress = parseFloat(
-      getComputedStyle(this).getPropertyValue('--o-progress') ||
-      this.getAttribute('value') ||
-      0
-    );
+    const orbitRadius = parseFloat(getComputedStyle(this).getPropertyValue('r') || 0);
+    let orbitNumber = parseFloat(getComputedStyle(this).getPropertyValue('--o-orbit-number'))
+    let size = parseFloat(getComputedStyle(this).getPropertyValue('--o-size-ratio'))
+    const range = parseFloat(getComputedStyle(this).getPropertyValue('--o-range') || 360);
+    const progress = parseFloat( getComputedStyle(this).getPropertyValue('--o-progress') || this.getAttribute('value') || 0);
     const shape = this.getAttribute('shape') || 'none';
-    const progressBarColor = this.getAttribute('bar-color');
-    const progressBgColor = this.getAttribute('bgcolor')  || 'transparent';
-    const strokeWidth = parseFloat(
-      getComputedStyle(this).getPropertyValue('stroke-width') || 1
-    );
-    let strokeWithPercentage = ((strokeWidth / 2) * 100) / orbitRadius / 2;
-    let innerOuter = strokeWithPercentage;
-    if (this.classList.contains('outer-orbit')) {
-      innerOuter = strokeWithPercentage * 2;
-    }
-    if (this.classList.contains('quarter-outer-orbit')) {
-      innerOuter = strokeWithPercentage * 1.75;
-    }
-    if (this.classList.contains('inner-orbit')) {
-      innerOuter = 0;
-    }
-    if (this.classList.contains('quarter-inner-orbit')) {
-      innerOuter = strokeWithPercentage * 0.75;
-    }
-    const realRadius = 50 + innerOuter - strokeWithPercentage;
+    const strokeWidth = parseFloat(getComputedStyle(this).getPropertyValue('--o-stroke-width'))
+    const arcHeight = orbitRadius / orbitNumber * size - strokeWidth + 0.3 // 0.3 tries to fix bug when render arcs
+    const arcHeightPercentage = ((arcHeight / 2 ) * 100) / orbitRadius / 2
+    const realRadius = 50 + innerOuter
     const maxAngle = range;
+    const maxValue = parseFloat(this.getAttribute('max')) || 100;
+    let innerOuter
+    if (this.classList.contains('outer-orbit')) {
+      innerOuter = arcHeightPercentage
+    } else if (this.classList.contains('quarter-outer-orbit')) {
+      innerOuter = arcHeightPercentage * -0.5
+    } else if (this.classList.contains('inner-orbit')) {
+      innerOuter = arcHeightPercentage * -1
+    } else if (this.classList.contains('quarter-inner-orbit')) {
+      innerOuter = arcHeightPercentage * 0.5
+    } else {
+      innerOuter = 0
+    }
     return {
       orbitRadius,
-      ellipseX,
-      ellipseY,
       progress,
-      progressBarColor,
-      progressBgColor,
       strokeWidth,
       realRadius,
       maxAngle,
-      shape
+      maxValue,
+      shape,
+      arcHeightPercentage,
+      orbitNumber
     };
   }
-
-  getProgressAngle(maxAngle, full) {
-    const progress = parseFloat(
-      getComputedStyle(this).getPropertyValue('--o-progress') ||
-      this.getAttribute('value') ||
-      0
-    );
-    const maxValue = parseFloat(this.getAttribute('max')) || 100;
+  getProgressAngle(full) {
+    const {maxAngle, progress, maxValue} = this.getAttributes()
     return full
       ? ((maxValue - 0.00001) / maxValue) * maxAngle
       : (progress / maxValue) * maxAngle;
   }
+  calculateArcParameters(full) {
+    const arcAngle = this.getProgressAngle(full);
+    const {realRadius, arcHeightPercentage, orbitNumber, shape, strokeWidth} = this.getAttributes()
+    const radius = realRadius
+    let startX, startY, endX, endY, largeArcFlag, startX1, startY1, endX1, endY1, dShape, pointX, pointX1, pointY, pointY1
+    let offset = Math.PI / 2
+    let stroke = strokeWidth
+    let fangle =  arcAngle * Math.PI / 180
+    let bigRadius = radius + arcHeightPercentage
+    let smallRadius = (radius - arcHeightPercentage) !== 0 ? radius - arcHeightPercentage : radius
+    let bigGap = (stroke * 2) / orbitNumber / 2 / bigRadius
+    let smallGap = (stroke * 2)  / orbitNumber / 2  / smallRadius
+    let startAngle = bigGap  - offset
+    let endAngle = fangle  - bigGap - offset
+    let startAngle1 = smallGap - offset
+    let endAngle1 = fangle  - smallGap - offset
+    // upper arc
+    startX = 50 + bigRadius * Math.cos(startAngle );
+    startY = 50 + bigRadius * Math.sin(startAngle );
+    endX = 50 + bigRadius * Math.cos(endAngle );
+    endY = 50 + bigRadius * Math.sin(endAngle );
+    pointX = 50 + bigRadius * Math.cos(endAngle + 3 * Math.PI / 180);
+    pointY = 50 + bigRadius  * Math.sin(endAngle + 3 * Math.PI / 180);
+    // inner arc
+    startX1 = 50 + smallRadius * Math.cos(startAngle1 );
+    startY1 = 50 + smallRadius * Math.sin(startAngle1 );
+    endX1 = 50 + smallRadius * Math.cos(endAngle1 );
+    endY1 = 50 + smallRadius * Math.sin(endAngle1 );
+    pointX1 = 50 + smallRadius * Math.cos(endAngle1 + 3 * Math.PI / 180);
+    pointY1 = 50 + smallRadius * Math.sin(endAngle1 + 3 * Math.PI / 180);
+    largeArcFlag = arcAngle <= 180 ? 0 : 1;
 
-  calculateArcParameters(angle, realRadius, ellipseX, ellipseY) {
-    const radiusX = realRadius / ellipseX;
-    const radiusY = realRadius / ellipseY;
-    const startX = 50 + radiusX * Math.cos(-Math.PI / 2);
-    const startY = 50 + radiusY * Math.sin(-Math.PI / 2);
-    const endX = 50 + radiusX * Math.cos(((angle - 90) * Math.PI) / 180);
-    const endY = 50 + radiusY * Math.sin(((angle - 90) * Math.PI) / 180);
-    const largeArcFlag = angle <= 180 ? 0 : 1;
-    const d = `M ${startX},${startY} A ${radiusX},${radiusY} 0 ${largeArcFlag} 1 ${endX},${endY}`;
-    return { startX, startY, endX, endY, largeArcFlag, d };
-  }
-
-  createDefs() {
-    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-    return defs;
-  }
-
-  createMarker(id, position = 'end') {
-    const { shape } = this.getAttributes();
-    const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
-    marker.setAttribute('id', id);
-    marker.setAttribute('viewBox', '0 0 10 10');
-    if (position === 'start' && shape !== 'circle') {
-      marker.setAttribute('refX', '2');
-    } else if (position === 'start' && shape === 'circle') {
-      marker.setAttribute('refX', '5');
-    } else {
-      marker.setAttribute('refX', '0.1');
-    }
-    marker.setAttribute('refY', '5');
-    marker.setAttribute('markerWidth', '1');
-    marker.setAttribute('markerHeight', '1');
-    marker.setAttribute('orient', 'auto');
-    marker.setAttribute('markerUnits', 'strokeWidth');
-    marker.setAttribute('fill', 'context-stroke');
-
-    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    const shapes = {
-      arrow: {
-        head: 'M 0 0 L 2 5 L 0 10 z',
-        tail: 'M 2 0 L 0 0 L 1 5 L 0 10 L 2 10 L 2 5 z'
-      },
-      slash: {
-        head: 'M 0 0 L 0 0 L 1 5 L 2 10 L 0 10 L 0 5 z',
-        tail: 'M 2 0 L 0 0 L 1 5 L 2 10 L 2 10 L 2 5 z'
-      },
-      backslash: {
-        head: 'M 0 0 L 2 0 L 1 5 L 0 10 L 0 10 L 0 5 z',
-        tail: 'M 2 0 L 2 0 L 1 5 L 0 10 L 2 10 L 2 5 z'
-      },
-      circle: {
-        head: 'M 0 0 C 7 0 7 10 0 10 z',
-        tail: 'M 6 0 C -1 0 -1 10 6 10 z'
-      },
-      zigzag: {
-        head: 'M 1 0 L 0 0 L 0 5 L 0 10 L 1 10 L 2 7 L 1 5 L 2 3 z',
-        tail: 'M 0 0 L 2 0 L 2 5 L 2 10 L 0 10 L 1 7 L 0 5 L 1 3 z'
-      }
-    };
-    if (position === 'end') {
-      path.setAttribute('d', shapes[shape].head);
-    } else {
-      path.setAttribute('d', shapes[shape].tail);
-    }
-
-    marker.appendChild(path);
-    return marker;
+    let d = `M ${startX},${startY} A ${bigRadius},${bigRadius} 0 ${largeArcFlag} 1 ${endX},${endY}`
+    if (shape === "arrow") d += `L ${(pointX + pointX1) / 2}  ${(pointY + pointY1) / 2} `
+    if (shape === "circle" || shape === 'bullet') d += `A ${(arcHeightPercentage)}, ${(arcHeightPercentage)} 0 0 1 ${endX1},${endY1} `
+    d += `L ${endX1} ${endY1}`
+    d += `A ${smallRadius},${smallRadius} 0 ${largeArcFlag} 0 ${startX1},${startY1}`
+    if (shape === "circle") d += `A ${(arcHeightPercentage)}, ${(arcHeightPercentage)} 0 0 1 ${startX},${startY} `
+    if (shape === "bullet") d += `A ${(arcHeightPercentage)}, ${(arcHeightPercentage)} 0 0 0 ${startX},${startY} `
+    if (shape === "arrow") d += `L ${startX1 + 3} ${(startY + startY1) / 2}  `
+    d += `Z`
+    return { d }
   }
 }
-
-// customElements.define('orbit-progress', OrbitProgress);
