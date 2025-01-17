@@ -1,58 +1,54 @@
-
-const template = document.createElement('template')
-template.innerHTML = `
-   <style>
-      :host {
-        --o-fill: var(--o-gray-light);
-        --o-stroke: var(--o-fill);
-        --o-stroke-width: 1;
-        --o-color: currentcolor;
-      }
-      :host(:hover){
-        --o-fill: var(--o-gray-light);
-        --o-stroke: var(--o-fill);
-        --o-stroke-width: 1;
-        --o-color: currentcolor;
-      }
-      svg {
-        width: 100%;
-        height: 100%;
-        overflow: visible;
-        pointer-events: none;
-      }
-      svg * {
-        pointer-events: visiblePainted;
-      }
-      #orbitShape {
-        fill: var(--o-fill);
-        stroke: var(--o-stroke);
-        stroke-width: var(--o-stroke-width);
-        transition: all 0.3s;
-        stroke-linejoin: round;
-      }
-      text {
-       fill: var(--o-color);
-      }
-      #orbitPath {
-        fill: transparent;
-        stroke: none;
-        stroke-width: 0;
-      }
-   </style>
-   <svg viewBox="0 0 100 100">
-     <path id="orbitShape" shape-rendering="geometricPrecision" vector-effect="non-scaling-stroke"></path>
-     <path id="orbitPath"  shape-rendering="geometricPrecision" vector-effect="non-scaling-stroke" ></path>
-     <text>
-        <textPath href="#orbitPath"  alignment-baseline="middle"></textPath>
-      </text>
-   </svg>
- `
-
 export class OrbitArc extends HTMLElement {
   constructor() {
     super()
     this.attachShadow({ mode: 'open' })
-    this.shadowRoot.appendChild(template.content.cloneNode(true))
+    this.shadowRoot.innerHTML = `
+    <style>
+        :host {
+          --o-fill: var(--o-gray-light);
+          --o-stroke: var(--o-fill);
+          --o-stroke-width: 1;
+          --o-color: currentcolor;
+        }
+        :host(:hover){
+          --o-fill: var(--o-gray-light);
+          --o-stroke: var(--o-fill);
+          --o-stroke-width: 1;
+          --o-color: currentcolor;
+        }
+        svg {
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+          pointer-events: none;
+        }
+        svg * {
+          pointer-events: visiblePainted;
+        }
+        #orbitShape {
+          fill: var(--o-fill);
+          stroke: var(--o-stroke);
+          stroke-width: var(--o-stroke-width);
+          transition: all 0.3s;
+          stroke-linejoin: round;
+        }
+        text {
+        fill: var(--o-color);
+        }
+        #orbitPath {
+          fill: transparent;
+          stroke: none;
+          stroke-width: 0;
+        }
+    </style>
+    <svg viewBox="0 0 100 100">
+      <path id="orbitShape" shape-rendering="geometricPrecision" vector-effect="non-scaling-stroke"></path>
+      <path id="orbitPath"  shape-rendering="geometricPrecision" vector-effect="non-scaling-stroke" ></path>
+      <text>
+          <textPath href="#orbitPath"  alignment-baseline="middle"></textPath>
+        </text>
+    </svg>
+    `
   }
   
   connectedCallback() {
