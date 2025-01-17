@@ -59,63 +59,65 @@ o-arc:hover {
 /* Dev theme based on default*/
 .dev-orbit.gravity-spot {
     background: none;
-    border: 0.2px dashed var(--o-red-light); 
+    border: 1px dashed var(--o-red-light); 
   }
   
 .dev-orbit {
   .gravity-spot {
     background: none;
-    border: 0.2px dashed var(--o-red-light); 
+    border: 1px dashed var(--o-red-light); 
   }
   
   .orbit, [class*='orbit-'] {
-    border: 0.2px solid var(--o-red-light);
+    border: 1px dashed var(--o-red-light);
   }
   
   .satellite {
     background-color: transparent;
-    border: 1px solid currentColor;
+    border: 1px dashed var(--o-red-light);
   }
   
   .vector {
     border: none;
-    background: currentColor;
+    background: var(--o-red-light);
   }
   
   .side {
     border: none;
-    background: currentColor;
+    background: var(--o-red-light);
   }
   
   o-progress {
-    --o-fill: var(--o-gray-light);
-    --o-stroke: var(--o-fill);
+    --o-fill: var(--o-red-lighter);
+    --o-stroke: var(--o-red-lighter);
     --o-stroke-width: 1;
-    --o-back-fill: transparent;
-    --o-back-stroke: none;
+    --o-back-fill: var(--o-red-lighter);
+    --o-back-stroke: var(--o-red-lighter);
     --o-back-stroke-width: 1;
+    fill-opacity: 0.5;
   }
 
   o-progress:hover {
-    --o-fill: var(--o-gray-light);
-    --o-stroke: var(--o-fill);
-    --o-stroke-width: 1;
-    --o-back-fill: transparent;
-    --o-back-stroke: none;
-    --o-back-stroke-width: 1;
+    --o-fill: var(--o-red-light);
+    --o-stroke: var(--o-red-light);
+    --o-stroke-width: 2;
+    --o-back-fill: var(--o-red-light);
+    --o-back-stroke: var(--o-red-light);
+    --o-back-stroke-width: 2;
   }
   
   o-arc {
-    --o-fill: var(--o-gray-light);
-    --o-stroke: var(--o-fill);
+    --o-fill: var(--o-red-lighter);
+    --o-stroke: var(--o-red-lighter);
     --o-stroke-width: 1;
     --o-color: currentcolor;
+    fill-opacity: 0.5;
   }
 
   o-arc:hover {
-    --o-fill: var(--o-gray-light);
-    --o-stroke: var(--o-fill);
-    --o-stroke-width: 1;
+    --o-fill:  var(--o-red-light);
+    --o-stroke: var(--o-red-light);
+    --o-stroke-width: 2;
     --o-color: currentcolor;
   }
   
@@ -150,7 +152,7 @@ o-arc:hover {
 
   o-progress {
     --o-fill: var(--o-cyan-light);
-    --o-stroke: var(--o-fill);
+    --o-stroke: var(--o-cyan);
     --o-stroke-width: 1;
     --o-back-fill: transparent;
     --o-back-stroke: none;
@@ -158,25 +160,25 @@ o-arc:hover {
   }
 
   o-progress:hover {
-    --o-fill: var(--o-gray-light);
-    --o-stroke: var(--o-fill);
-    --o-stroke-width: 1;
+    --o-fill: var(--o-cyan-lighter);
+    --o-stroke: var(--o-cyan-light);
+    --o-stroke-width: 2;
     --o-back-fill: transparent;
     --o-back-stroke: none;
-    --o-back-stroke-width: 1;
+    --o-back-stroke-width: 2;
   }
 
   o-arc {
     --o-fill: var(--o-cyan-light);
-    --o-stroke: var(--o-fill);
+    --o-stroke: var(--o-cyan);
     --o-stroke-width: 1;
     --o-color: var(--o-cyan-darker);
   }
 
   o-arc:hover {
-    --o-fill: var(--o-gray-light);
-    --o-stroke: var(--o-fill);
-    --o-stroke-width: 1;
+    --o-fill: var(--o-cyan-lighter);
+    --o-stroke: var(--o-cyan-light);
+    --o-stroke-width: 2;
     --o-color: currentcolor;
   }
 
