@@ -46,14 +46,12 @@ o-arc {
   --o-fill: var(--o-gray-light);
   --o-stroke: var(--o-fill);
   --o-stroke-width: 1;
-  --o-color: currentcolor;
 }
 
 o-arc:hover {
   --o-fill: var(--o-gray-light);
   --o-stroke: var(--o-fill);
   --o-stroke-width: 1;
-  --o-color: currentcolor;
 }
 
 /* Dev theme based on default*/
@@ -110,7 +108,6 @@ o-arc:hover {
     --o-fill: var(--o-red-lighter);
     --o-stroke: var(--o-red-lighter);
     --o-stroke-width: 1;
-    --o-color: currentcolor;
     fill-opacity: 0.5;
   }
 
@@ -118,7 +115,6 @@ o-arc:hover {
     --o-fill:  var(--o-red-light);
     --o-stroke: var(--o-red-light);
     --o-stroke-width: 2;
-    --o-color: currentcolor;
   }
   
 }
@@ -152,7 +148,7 @@ o-arc:hover {
 
   o-progress {
     --o-fill: var(--o-cyan-light);
-    --o-stroke: var(--o-cyan);
+    --o-stroke: var(--o-fill);
     --o-stroke-width: 1;
     --o-back-fill: transparent;
     --o-back-stroke: none;
@@ -161,7 +157,7 @@ o-arc:hover {
 
   o-progress:hover {
     --o-fill: var(--o-cyan-lighter);
-    --o-stroke: var(--o-cyan-light);
+    --o-stroke: var(--o-fill);
     --o-stroke-width: 2;
     --o-back-fill: transparent;
     --o-back-stroke: none;
@@ -170,16 +166,14 @@ o-arc:hover {
 
   o-arc {
     --o-fill: var(--o-cyan-light);
-    --o-stroke: var(--o-cyan);
+    --o-stroke: var(--o-fill);
     --o-stroke-width: 1;
-    --o-color: var(--o-cyan-darker);
   }
 
   o-arc:hover {
     --o-fill: var(--o-cyan-lighter);
-    --o-stroke: var(--o-cyan-light);
+    --o-stroke: var(--o-fill);
     --o-stroke-width: 2;
-    --o-color: currentcolor;
   }
 
 }
