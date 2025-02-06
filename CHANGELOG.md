@@ -2,32 +2,40 @@
 
 All notable changes to this project will be documented in this file. 
 
+#### [v1.2.0](https://github.com/zumerlab/grid/compare/v1.1.0...v1.2.0)
+
+> 6 February 2025
+
+- Add intermediate shrink values from 0-100 by 5. [`0f9f4f2`](https://github.com/zumerlab/grid/commit/0f9f4f2b9cded3d19a3f32e437183471e0fa7bc9)
+
+
 #### [v1.1.0](https://github.com/zumerlab/grid/compare/v1.0.0...v1.1.0)
 
 > 29 January 2025
 
-**Update `o-arc` and `o-progress`:**
-
-- Fix o-arc styling [`7188159`](https://github.com/zumerlab/grid/commit/71881590fea55f8f29bf6ede3c074507de3eedc5)
-- Update o-progress with new o-arc features [`199d8fc`](https://github.com/zumerlab/grid/commit/199d8fc3bb1d16f292747584a53bc5563c21edf1)
-- Add ending shapes: circle,bullet,arrow [`2374e1e`](https://github.com/zumerlab/grid/commit/2374e1ee7fa7e36d3164185409d5cffb0deb74f7)
-- Consistent gaps [`6bdcd11`](https://github.com/zumerlab/grid/commit/6bdcd113793b0327c2a4477630058da0cbde8b69)
+- Bumped version [`fa0ea45`](https://github.com/zumerlab/grid/commit/fa0ea45a833ff080a7e30b89ae78121fe092ba56)
+- fix o-arc styling [`7188159`](https://github.com/zumerlab/grid/commit/71881590fea55f8f29bf6ede3c074507de3eedc5)
+- o-progress with new o-arc features [`199d8fc`](https://github.com/zumerlab/grid/commit/199d8fc3bb1d16f292747584a53bc5563c21edf1)
+- add ending shapes: circle,bullet,arrow [`2374e1e`](https://github.com/zumerlab/grid/commit/2374e1ee7fa7e36d3164185409d5cffb0deb74f7)
+- close enough with bugs [`6bdcd11`](https://github.com/zumerlab/grid/commit/6bdcd113793b0327c2a4477630058da0cbde8b69)
 - Fix gap ratio [`f280eef`](https://github.com/zumerlab/grid/commit/f280eeff98d869c941397d180e9c279f26c280fa)
 - Fix totalLenght() [`15a5aa0`](https://github.com/zumerlab/grid/commit/15a5aa07b6ca6a8a862c119715ffdeaef8761f2b)
 - Fix textPath [`843f34d`](https://github.com/zumerlab/grid/commit/843f34d4b9611ba5d32d17974a2907e38e2b1b16)
 - Remove template [`94a9bbc`](https://github.com/zumerlab/grid/commit/94a9bbcada82ee56dd0759690deb3da1d02bb3ed)
 - Fix offset [`3e49a83`](https://github.com/zumerlab/grid/commit/3e49a83a9aac7a2f840e839fcc4d1166a76ee5c3)
-- fix flip curved text [`8fc8554`](https://github.com/zumerlab/grid/commit/8fc85549da29feb1ce66a89e13f6635332ee8039)
-- fix innerOuter init order [`6c3255e`](https://github.com/zumerlab/grid/commit/6c3255e56c08bed0b9ee11c6fdaeb34bf64d9c07)
-- Fix twice registry attemp en some code environments [`706d4e6`](https://github.com/zumerlab/grid/commit/706d4e6f1e5c76994ea7554ddd84a314e44b71f2)
-
-**Update Orbit themes:**
+- first draft [`f8398c4`](https://github.com/zumerlab/grid/commit/f8398c4b56b2089d2139cd6d5e502cf1f9a8542c)
 - Improve themes [`0987bb0`](https://github.com/zumerlab/grid/commit/0987bb0554d58f384dd2322de6cb1f611d46a151)
-- Fix theme [`df99dcc`](https://github.com/zumerlab/grid/commit/df99dcc4d33143ee8f2f9d34007fda87c306307a)
-
-**Minor changes:**
 - Remove o-text traces [`7b43b1c`](https://github.com/zumerlab/grid/commit/7b43b1ca0f69af2e1eb83102dd46beab6b002b28)
-
+- o-arx tree-shake code [`eefb5de`](https://github.com/zumerlab/grid/commit/eefb5de0d5e63b207f07b0b1c8f6c46f20244da1)
+- Fix theme [`df99dcc`](https://github.com/zumerlab/grid/commit/df99dcc4d33143ee8f2f9d34007fda87c306307a)
+- Fix twice registry attemp en some code environments [`706d4e6`](https://github.com/zumerlab/grid/commit/706d4e6f1e5c76994ea7554ddd84a314e44b71f2)
+- Update README.md [`e1ab66a`](https://github.com/zumerlab/grid/commit/e1ab66a591bad22d98dc0eb96446ef7dc848f1a8)
+- Update README.md [`3f92461`](https://github.com/zumerlab/grid/commit/3f92461f2bfc62cbdc4f202791fb8fca67ef2553)
+- fix flip curved text [`8fc8554`](https://github.com/zumerlab/grid/commit/8fc85549da29feb1ce66a89e13f6635332ee8039)
+- Update LICENSE [`6c09bed`](https://github.com/zumerlab/grid/commit/6c09bedd23ed98a122c0e52b9e42525e8dee1796)
+- fix innerOuter init order [`6c3255e`](https://github.com/zumerlab/grid/commit/6c3255e56c08bed0b9ee11c6fdaeb34bf64d9c07)
+- restore [`e274e79`](https://github.com/zumerlab/grid/commit/e274e796e5b62077e622fa2e31ec7f536b5d4d3d)
+- Move to .github [`90e1d4c`](https://github.com/zumerlab/grid/commit/90e1d4c0713c7feace9fa6b3d267f746c9da6b0e)
 
 ### [v1.0.0](https://github.com/zumerlab/grid/compare/v0.6.0...v1.0.0)
 
