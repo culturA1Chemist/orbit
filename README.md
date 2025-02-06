@@ -30,6 +30,15 @@ place your ⭐ in Orbit! <a href="https://github.com/zumerlab/orbit/stargazers">
 
 Creating radial UIs generally involves using JavaScript or other programming languages to calculate angles, radii, distances, and more. **Orbit** saves you time and effort by enabling you to build these UIs with just CSS.
 
+## Features
+
+With **Orbit**, you can:
+
+- Build any kind of radial UI using predefined CSS classes that do the heavy lifting.  
+- Easily compose simple or complex radial designs by combining **Orbit** elements.  
+- Use **Orbit** alongside other traditional CSS frameworks.  
+- Get started quickly with our detailed documentation, examples, and guides.  
+
 ## Documentation
 
 Learn all about **Orbit** in our [doc site](https://zumerlab.github.io/orbit-docs)!
@@ -45,27 +54,18 @@ Radial UI refers to a design paradigm where elements are organized in a circular
 - **Creative art and structures:** mandalas, sci-fi-inspired art, chemical structures  
 - **Interactive interfaces:** watch faces, dynamic controls for games or tools  
 
-**Characteristics of radial UI:**
+**Characteristics:**
 
 - **Circular layout:** elements are arranged in a circular or curved pattern.  
 - **Center-focused:** the center often serves as a focal point.  
 - **Symmetry:** radial UIs frequently exhibit symmetry, fostering a sense of balance.  
 - **Angular relationships:** elements are positioned at specific angles relative to one another.  
 
-**Benefits of radial UI:**
+**Benefits:**
 
 - **Aesthetics:** radial designs are visually striking and engaging.  
 - **Intuitive navigation:** circular layouts simplify navigation and reduce cognitive load.  
 - **Space efficiency:** radial UIs make efficient use of available screen, ideal for both compact and expansive interfaces.  
-
-## Features
-
-With **Orbit**, you can:
-
-- Build any kind of radial UI using predefined CSS classes that do the heavy lifting.  
-- Easily compose simple or complex radial designs by combining **Orbit** elements.  
-- Use **Orbit** alongside other traditional CSS frameworks.  
-- Get started quickly with our detailed documentation, examples, and guides.  
 
 ## Installation
 
@@ -127,10 +127,11 @@ Or via CDN:
 ```html
 <div class="bigbang">
   <div class="gravity-spot">
-    <div class="orbit">
-      <div class="satellite">1</div>
-      <div class="satellite">2</div>
-      <div class="satellite">3</div>
+    <div class="orbit-2 range-180 from-180">
+      <o-arc shape="circle" class="shrink-50"></o-arc>
+    </div>
+    <div class="orbit-3 range-270 ">
+      <o-arc shape="circle" class="shrink-50"></o-arc>
     </div>
   </div>
 </div>
@@ -154,7 +155,7 @@ There are many ways to **contribute** to **Orbit** development:
 - [**GitHub discussions**](https://github.com/zumerlab/orbit/discussions): Engage with other contributors, ask questions, and share your experiences.
 - [**Telegram group**](https://t.me/ZumlyCommunity): Join our Telegram group for real-time discussions and updates.
 
-## Special thanks to Doc Contributors
+## Special thanks to our contributors
 
 <a href="https://github.com/zumerlab/orbit-docs/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=zumerlab/orbit-docs" />
