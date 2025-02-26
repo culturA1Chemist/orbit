@@ -27,7 +27,7 @@ template.innerHTML = `
         fill: var(--o-fill);
         stroke: var(--o-stroke);
         stroke-width: var(--o-stroke-width);
-        transition: fill 0.2s, stroke 0.2s;
+        transition: fill 0.25s, stroke 0.25s;
         stroke-linejoin: round;
       }
       text {
