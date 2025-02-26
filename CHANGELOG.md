@@ -2,12 +2,23 @@
 
 All notable changes to this project will be documented in this file. 
 
+#### [v1.2.1](https://github.com/zumerlab/grid/compare/v1.2.0...v1.2.1)
+
+> 26 February 2025
+
+- Change transition properties to avoid issue when WC is animated. [`bae9c32`](https://github.com/zumerlab/grid/commit/bae9c3225e5aeff5e56d0b339ab0f82eb461254c)
+
+
 #### [v1.2.0](https://github.com/zumerlab/grid/compare/v1.1.0...v1.2.0)
 
 > 6 February 2025
 
+- Update. Closes #31, closes #33, closes #34, closes #35 [`#31`](https://github.com/zumerlab/grid/issues/31) [`#33`](https://github.com/zumerlab/grid/issues/33) [`#34`](https://github.com/zumerlab/grid/issues/34) [`#35`](https://github.com/zumerlab/grid/issues/35)
+- Update [`d07904c`](https://github.com/zumerlab/grid/commit/d07904c92c74a5590fba01367de154b4d4d11cad)
 - Add intermediate shrink values from 0-100 by 5. [`0f9f4f2`](https://github.com/zumerlab/grid/commit/0f9f4f2b9cded3d19a3f32e437183471e0fa7bc9)
-
+- Update LICENSE [`ed7e366`](https://github.com/zumerlab/grid/commit/ed7e366dc7a26207880c2e794853bd7fe521cab9)
+- update [`a90183f`](https://github.com/zumerlab/grid/commit/a90183fe9ce2e5e6c713f4e452d7d77b91d3664d)
+- Update LICENSE [`238d9d8`](https://github.com/zumerlab/grid/commit/238d9d8003be862b8fbaee505c427718fb00b94c)
 
 #### [v1.1.0](https://github.com/zumerlab/grid/compare/v1.0.0...v1.1.0)
 
