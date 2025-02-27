@@ -56,15 +56,27 @@ export class OrbitArc extends HTMLElement {
   }
   
   connectedCallback() {
-    this.update()
+    this.update();
     this.observer = new MutationObserver((mutations) => {
-      this.observer.disconnect()
+      this.observer.disconnect();
       mutations.forEach((mutation) => {
-        this.update()
-      })
-      this.observer.observe(this, { attributes: true, childList: true })
-    })
-    this.observer.observe(this, { attributes: true, childList: true })
+        this.update();
+      });
+      this.observer.observe(this, { attributes: true, childList: true });
+    });
+    this.observer.observe(this, { attributes: true, childList: true });
+  
+    // Observer to watch for text content changes
+    this.textObserver = new MutationObserver(() => {
+      const textPath = this.shadowRoot.querySelector('textPath');
+      textPath.textContent = this.textContent;
+    });
+    this.textObserver.observe(this, { characterData: true, subtree: true });
+  }
+  
+  disconnectedCallback() {
+    this.observer.disconnect();
+    this.textObserver.disconnect(); // Disconnect the text observer as well
   }
 
   update() {
