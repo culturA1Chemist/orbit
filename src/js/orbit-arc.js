@@ -28,7 +28,7 @@ template.innerHTML = `
         stroke: var(--o-stroke);
         stroke-width: var(--o-stroke-width);
         transition: fill 0.25s, stroke 0.25s;
-        stroke-linejoin: round;
+       
       }
       text {
        fill: var(--o-color);
@@ -190,48 +190,138 @@ export class OrbitArc extends HTMLElement {
     return (progress / maxValue) * maxAngle
   }
 
+   getControlPoint(x, y, x1, y1, direction = "clockwise") {
+    // Punto medio
+    let xm = (x + x1) / 2;
+    let ym = (y + y1) / 2;
+
+    // Vector del segmento
+    let dx = x1 - x;
+    let dy = y1 - y;
+
+    // Determinar el punto de control según el sentido de la curva
+    let xc, yc;
+    if (direction === "clockwise") {
+        xc = xm + dy * 0.4;   // Giro horario (90°)
+        yc = ym - dx * 0.4;  
+    } else {
+        xc = xm - dy * 0.4;     // Giro antihorario (-90°)
+        yc = ym + dx * 0.4;
+    }
+
+    return { xc, yc };
+}
+
   calculateArcParameters() {
-    const {arcAngle, realRadius, gap, arcHeightPercentage, orbitNumber, shape, strokeWidth} = this.getAttributes()
+    const {arcAngle, realRadius, gap, arcHeightPercentage, orbitNumber, shape, strokeWidth, arcHeight} = this.getAttributes()
     const radius = realRadius
-    let startX, startY, endX, endY, largeArcFlag, startX1, startY1, endX1, endY1, dShape, pointX, pointX1, pointY, pointY1
+    let largeArcFlag, dShape
     let offset = Math.PI / 2
     let stroke = strokeWidth
     let fangle =  arcAngle * Math.PI / 180
     let bigRadius = radius + arcHeightPercentage
     let smallRadius = (radius - arcHeightPercentage) !== 0 ? radius - arcHeightPercentage : radius
-    let bigGap = (gap * 2 + stroke * 2) / orbitNumber / 2 / bigRadius
-    let smallGap = (gap  * 2 + stroke * 2)  / orbitNumber / 2  / smallRadius
-    let startAngle = bigGap  - offset
-    let endAngle = fangle  - bigGap - offset
-    let startAngle1 = smallGap - offset
-    let endAngle1 = fangle  - smallGap - offset
+    let bigGap = (gap + stroke * 1.25)  / orbitNumber / bigRadius
+    let smallGap = (gap + stroke * 1.25)  / orbitNumber / smallRadius
+    let upperAngleStart  = bigGap  - offset
+    let upperAngleEnd  = fangle  - bigGap - offset
+    let innerAngleStart = smallGap - offset
+    let innerAngleEnd = fangle  - smallGap - offset
+   
+    function arcPoint(radius, angle, radiusAdjustment = 0, angleOffsetDegrees = 0) {
+      const adjustedRadius = radius + radiusAdjustment;
+      const adjustedAngle = angle + (angleOffsetDegrees * Math.PI / 180);
+      return {
+        x: 50 + adjustedRadius * Math.cos(adjustedAngle),
+        y: 50 + adjustedRadius * Math.sin(adjustedAngle)
+      };
+    }
     
     // upper arc
-    startX = 50 + bigRadius * Math.cos(startAngle );
-    startY = 50 + bigRadius * Math.sin(startAngle );
-    endX = 50 + bigRadius * Math.cos(endAngle );
-    endY = 50 + bigRadius * Math.sin(endAngle );
-    pointX = 50 + bigRadius * Math.cos(endAngle + 3 * Math.PI / 180);
-    pointY = 50 + bigRadius  * Math.sin(endAngle + 3 * Math.PI / 180);
+    let upperArcStart = arcPoint(bigRadius, upperAngleStart)
+    let upperArcEnd = arcPoint(bigRadius,upperAngleEnd)
+    
     // inner arc
-    startX1 = 50 + smallRadius * Math.cos(startAngle1 );
-    startY1 = 50 + smallRadius * Math.sin(startAngle1 );
-    endX1 = 50 + smallRadius * Math.cos(endAngle1 );
-    endY1 = 50 + smallRadius * Math.sin(endAngle1 );
-    pointX1 = 50 + smallRadius * Math.cos(endAngle1 + 3 * Math.PI / 180);
-    pointY1 = 50 + smallRadius * Math.sin(endAngle1 + 3 * Math.PI / 180);
+    let innerArcStart  = arcPoint(smallRadius, innerAngleStart)
+    let innerArcEnd  = arcPoint(smallRadius, innerAngleEnd)
     
     largeArcFlag = arcAngle <= 180 ? 0 : 1;
 
-    dShape = `M ${startX},${startY} A ${bigRadius},${bigRadius} 0 ${largeArcFlag} 1 ${endX},${endY}`
-    if (shape === "arrow") dShape += `L ${(pointX + pointX1) / 2}  ${(pointY + pointY1) / 2} `
-    if (shape === "circle" || shape === 'bullet') dShape += `A ${(arcHeightPercentage)}, ${(arcHeightPercentage)} 0 0 1 ${endX1},${endY1} `
-    dShape += `L ${endX1} ${endY1}`
-    dShape += `A ${smallRadius},${smallRadius} 0 ${largeArcFlag} 0 ${startX1},${startY1}`
-    if (shape === "circle") dShape += `A ${(arcHeightPercentage)}, ${(arcHeightPercentage)} 0 0 1 ${startX},${startY} `
-    if (shape === "bullet") dShape += `A ${(arcHeightPercentage)}, ${(arcHeightPercentage)} 0 0 0 ${startX},${startY} `
-    if (shape === "arrow") dShape += `L ${startX1 + 3} ${(startY + startY1) / 2}  `
-    dShape += `Z`
+    if (shape === "rounded") {
+      let curve = arcHeight < 10 ? 5 : arcHeight < 5 ? 2.5 : 10
+      let newUpperStart = arcPoint(bigRadius,upperAngleStart, 0, (curve) / orbitNumber)
+      let newUpperEnd = arcPoint(bigRadius,upperAngleEnd, 0, -(curve) / orbitNumber)
+      let newInnerStart  = arcPoint(smallRadius, innerAngleStart , 0, (curve) / orbitNumber)
+      let newInnerEnd  = arcPoint(smallRadius, innerAngleEnd , 0, -(curve) / orbitNumber)
+
+      let upperPointStart = arcPoint(bigRadius, upperAngleStart, -(curve / 2  ) / orbitNumber, 0)
+      let upperPointEnd  = arcPoint(bigRadius, upperAngleEnd, -(curve / 2  ) / orbitNumber, 0)
+      let innerPointStart = arcPoint(smallRadius, innerAngleStart, (curve / 2  ) / orbitNumber, 0)
+      let innerPointEnd = arcPoint(smallRadius, innerAngleEnd, (curve / 2  ) / orbitNumber, 0)
+
+      let Q = this.getControlPoint(newUpperEnd.x, newUpperEnd.y, upperPointEnd.x, upperPointEnd.y)
+      let Q1 = this.getControlPoint(innerPointEnd.x, innerPointEnd.y, newInnerEnd.x,newInnerEnd.y)
+      let Q2 = this.getControlPoint(newInnerStart.x,  newInnerStart.y, innerPointStart.x, innerPointStart.y)
+      let Q3 = this.getControlPoint( upperPointStart.x,  upperPointStart.y, newUpperStart.x,newUpperStart.y)
+
+      dShape  = `M ${newUpperStart.x},${newUpperStart.y} A ${bigRadius},${bigRadius} 0 ${largeArcFlag} 1 ${newUpperEnd.x},${newUpperEnd.y}`
+      dShape += `Q ${Q.xc}, ${Q.yc} ${upperPointEnd.x}  ${upperPointEnd.y} `
+      dShape += `L ${upperPointEnd.x} ${upperPointEnd.y}`
+      dShape += `L ${innerPointEnd.x} ${innerPointEnd.y}`
+      dShape += `Q ${Q1.xc}, ${Q1.yc} ${newInnerEnd.x} ${newInnerEnd.y} `
+     
+      dShape += `A ${smallRadius},${smallRadius} 0 ${largeArcFlag} 0 ${newInnerStart.x},${ newInnerStart.y}`
+      dShape += `Q ${Q2.xc}, ${Q2.yc} ${innerPointStart.x}  ${innerPointStart.y} `
+      dShape += `L ${innerPointStart.x} ${innerPointStart.y}`
+      dShape += `L ${ upperPointStart.x} ${ upperPointStart.y}`
+      dShape += ` Q ${Q3.xc}, ${Q3.yc} ${newUpperStart.x} ${newUpperStart.y} `
+      dShape += ` Z`
+    } else if (shape === "circle" || shape === "bullet") {
+      dShape  = `M ${upperArcStart.x},${upperArcStart.y} A ${bigRadius},${bigRadius} 0 ${largeArcFlag} 1 ${upperArcEnd.x},${upperArcEnd.y}`
+      dShape += ` A 1,1 0 0 1 ${innerArcEnd.x},${innerArcEnd.y} `
+      dShape += ` A ${smallRadius},${smallRadius} 0 ${largeArcFlag} 0 ${innerArcStart.x},${ innerArcStart.y}`
+      dShape += ` A 1,1 0 0 ${shape === "circle" ? 1 : 0} ${upperArcStart.x},${upperArcStart.y} `
+      dShape += ` Z`
+    } else if (shape === "circle1") {
+      let segment =  arcHeight * 1.36
+      let newUpperStart = arcPoint(bigRadius,upperAngleStart, 0, ((segment)) / orbitNumber)
+      let newUpperEnd = arcPoint(bigRadius,upperAngleEnd, 0, -(((segment)) / orbitNumber))
+      let newInnerStart = arcPoint(smallRadius,innerAngleStart, 0, ((segment)) / orbitNumber)
+      let newInnerEnd = arcPoint(smallRadius,innerAngleEnd, 0, -(((segment)) / orbitNumber))
+      dShape  = `M ${newUpperStart.x},${newUpperStart.y} A ${bigRadius},${bigRadius} 0 ${largeArcFlag} 1 ${newUpperEnd.x},${newUpperEnd.y}`
+      dShape += ` A 1,1 0 0 1 ${newInnerEnd.x},${newInnerEnd.y} `
+      dShape += ` A ${smallRadius},${smallRadius} 0 ${largeArcFlag} 0 ${newInnerStart.x},${ newInnerStart.y}`
+      dShape += ` A 1,1 0 0 1 ${newUpperStart.x},${newUpperStart.y} `
+      dShape += ` Z`
+    } else if (shape === "arrow") {
+      let middleEnd = arcPoint(radius, upperAngleEnd, 0, 24 / orbitNumber / 2)
+      let middleStart = arcPoint(radius, upperAngleStart, 0, 24 / orbitNumber / 2)
+      dShape  = `M ${upperArcStart.x},${upperArcStart.y} A ${bigRadius},${bigRadius} 0 ${largeArcFlag} 1 ${upperArcEnd.x},${upperArcEnd.y}`
+      dShape += `L ${middleEnd.x} ${middleEnd.y}`
+      dShape += `L ${innerArcEnd.x} ${innerArcEnd.y}`
+      dShape += `A ${smallRadius},${smallRadius} 0 ${largeArcFlag} 0 ${innerArcStart.x}, ${innerArcStart.y}`
+      dShape += `L ${middleStart.x} ${middleStart.y}  `
+      dShape += `Z`
+    } else if (shape === "backslash" || shape === "slash") {
+      let newUpperStart = arcPoint(bigRadius,upperAngleStart, 0, shape === "backslash" ? 0 : 24 / orbitNumber / 2)
+      let newUpperEnd = arcPoint(bigRadius,upperAngleEnd, 0, shape === "backslash" ? 0 : 24 / orbitNumber / 2)
+      let newInnerStart = arcPoint(smallRadius,innerAngleStart, 0, shape === "backslash" ? 24 / orbitNumber / 2 : 0)
+      let newInnerEnd = arcPoint(smallRadius,innerAngleEnd, 0, shape === "backslash" ? 24 / orbitNumber / 2 : 0)
+      dShape  = `M ${newUpperStart.x},${newUpperStart.y} A ${bigRadius},${bigRadius} 0 ${largeArcFlag} 1 ${newUpperEnd.x},${newUpperEnd.y}`
+      dShape += `L ${newInnerEnd.x} ${newInnerEnd.y}`
+      dShape += `A ${smallRadius},${smallRadius} 0 ${largeArcFlag} 0 ${newInnerStart.x}, ${newInnerStart.y}`
+      dShape += `Z`
+    } else if (shape === "nr"){
+      dShape  = `M ${upperArcStart.x},${upperArcStart.y} A ${bigRadius},${bigRadius} 0 ${largeArcFlag} 1 ${upperArcEnd.x},${upperArcEnd.y}`
+      dShape += `L ${innerArcEnd.x} ${innerArcEnd.y}`
+      dShape += `A ${smallRadius},${smallRadius} 0 ${largeArcFlag} 0 ${innerArcStart.x}, ${innerArcStart.y}`
+      dShape += `Z`
+    } else {
+      dShape  = `M ${upperArcStart.x},${upperArcStart.y} A ${bigRadius},${bigRadius} 0 ${largeArcFlag} 1 ${upperArcEnd.x},${upperArcEnd.y}`
+      dShape += `L ${innerArcEnd.x} ${innerArcEnd.y}`
+      dShape += `A ${smallRadius},${smallRadius} 0 ${largeArcFlag} 0 ${innerArcStart.x}, ${innerArcStart.y}`
+      dShape += `Z`
+    }
  
     return { dShape }
   }
