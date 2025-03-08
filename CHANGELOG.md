@@ -2,12 +2,21 @@
 
 All notable changes to this project will be documented in this file. 
 
+#### [v1.2.2](https://github.com/zumerlab/grid/compare/v1.2.1...v1.2.2)
+
+> 8 March 2025
+
+- O-Arc: add new ending shapes [`144ec4c`](https://github.com/zumerlab/grid/commit/144ec4cc0dc34ebf7f836238e6a9fd589f45458a)
+- O-Arc: fix bug that prevents update text on change [`a6fc1f9`](https://github.com/zumerlab/grid/commit/a6fc1f93b241473e5cf5523a7ca717bdcbf1e04c)
+
+
 #### [v1.2.1](https://github.com/zumerlab/grid/compare/v1.2.0...v1.2.1)
 
 > 26 February 2025
 
+- Bumped version [`ee0b828`](https://github.com/zumerlab/grid/commit/ee0b828b55383bfa7c94f6a4d7c22f837a63989a)
 - Change transition properties to avoid issue when WC is animated. [`bae9c32`](https://github.com/zumerlab/grid/commit/bae9c3225e5aeff5e56d0b339ab0f82eb461254c)
-
+- Bumped version [`9b93d3d`](https://github.com/zumerlab/grid/commit/9b93d3de546cecf92ee676711243121538102c6b)
 
 #### [v1.2.0](https://github.com/zumerlab/grid/compare/v1.1.0...v1.2.0)
 
