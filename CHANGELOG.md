@@ -2,13 +2,19 @@
 
 All notable changes to this project will be documented in this file. 
 
+#### [v1.3.0](https://github.com/zumerlab/grid/compare/v1.2.2...v1.3.0)
+
+> 25 March 2025
+
+- Feat. new ending shapes added [`3482006`](https://github.com/zumerlab/grid/commit/34820062b8eedfd12bf104305816eee5e5d680fe)
+
 #### [v1.2.2](https://github.com/zumerlab/grid/compare/v1.2.1...v1.2.2)
 
 > 8 March 2025
 
-- O-Arc: add new ending shapes [`144ec4c`](https://github.com/zumerlab/grid/commit/144ec4cc0dc34ebf7f836238e6a9fd589f45458a)
-- O-Arc: fix bug that prevents update text on change [`a6fc1f9`](https://github.com/zumerlab/grid/commit/a6fc1f93b241473e5cf5523a7ca717bdcbf1e04c)
-
+- Add new ending shapes [`144ec4c`](https://github.com/zumerlab/grid/commit/144ec4cc0dc34ebf7f836238e6a9fd589f45458a)
+- Fix bug that prevents update text on change [`a6fc1f9`](https://github.com/zumerlab/grid/commit/a6fc1f93b241473e5cf5523a7ca717bdcbf1e04c)
+- Bumped version [`a23d4d6`](https://github.com/zumerlab/grid/commit/a23d4d683b888dbdbcb41d723db7bb22b808cf4b)
 
 #### [v1.2.1](https://github.com/zumerlab/grid/compare/v1.2.0...v1.2.1)
 
