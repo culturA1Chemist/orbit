@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file. 
 
+#### [v1.4.0](https://github.com/zumerlab/grid/compare/v1.3.0...v1.4.0)
+
+> 19 May 2025
+
+- Fix nested alignment, closes #39 [`#39`](https://github.com/zumerlab/grid/issues/39)
+
 #### [v1.3.0](https://github.com/zumerlab/grid/compare/v1.2.2...v1.3.0)
 
 > 25 March 2025
 
 - Feat. new ending shapes added [`3482006`](https://github.com/zumerlab/grid/commit/34820062b8eedfd12bf104305816eee5e5d680fe)
+- Bumped version [`04f6e74`](https://github.com/zumerlab/grid/commit/04f6e74392094b1930488b4f61088f3381b19078)
 
 #### [v1.2.2](https://github.com/zumerlab/grid/compare/v1.2.1...v1.2.2)
 
