@@ -2,11 +2,19 @@
 
 All notable changes to this project will be documented in this file. 
 
+#### [v1.4.3](https://github.com/zumerlab/grid/compare/v1.4.0...v1.4.3)
+
+> 18 June 2025
+
+- Optimice web-component code [`c71506e`](https://github.com/zumerlab/grid/commit/c71506e304cdfa9bc45b819bd08c79cda57c2092)
+
+
 #### [v1.4.0](https://github.com/zumerlab/grid/compare/v1.3.0...v1.4.0)
 
 > 19 May 2025
 
-- Fix nested alignment, closes #39 [`#39`](https://github.com/zumerlab/grid/issues/39)
+- Fix nested alignamet, closes #39 [`#39`](https://github.com/zumerlab/grid/issues/39)
+- Bumped version [`c7fa105`](https://github.com/zumerlab/grid/commit/c7fa105d114eeae97efc2fd55d99d92a9590aa9a)
 
 #### [v1.3.0](https://github.com/zumerlab/grid/compare/v1.2.2...v1.3.0)
 
